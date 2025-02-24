@@ -1,30 +1,39 @@
 /* eslint-disable no-undef */
 
+// Import Firebase scripts
 importScripts('https://www.gstatic.com/firebasejs/8.8.0/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/8.8.0/firebase-messaging.js');
 
-firebase.initializeApp({
-  apiKey: 'AIzaSyCpgz8KhGA9jJLX8ucLHsyjHZb-vLy6fRE',
-  authDomain: 'nurselynx-2fb1c.firebaseapp.com',
-  projectId: 'nurselynx-2fb1c',
-  storageBucket: 'nurselynx-2fb1c.firebasestorage.app',
-  messagingSenderId: '1032811457113',
-  appId: '1:1032811457113:web:a499698213013554f7df48',
-  measurementId: 'G-HMJG2K78W6',
+let firebaseConfig = null;
+
+// Listen for messages from the main app to get the Firebase config
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SET_FIREBASE_CONFIG') {
+    firebaseConfig = event.data.config;
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+  }
 });
 
+// Function to clean HTML content
 function cleanHTML(input) {
-  // Remove <b> tags but keep their content
-  return input.replace(/<\/?b>/g, ''); // Removes opening and closing <b> tags
+  return input.replace(/<\/?b>/g, '');
 }
 
-const messaging = firebase.messaging();
+// Wait for Firebase to be initialized before handling messages
+self.addEventListener('activate', () => {
+  if (firebaseConfig) {
+    const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage((payload) => {
-  const notificationTitle = payload.notification.title;
-  const notificationBody = cleanHTML(payload.notification.body); // Clean HTML content
-  const notificationOptions = {
-    body: notificationBody,
-  };
-  return self.registration.showNotification(notificationTitle, notificationOptions);
+    messaging.onBackgroundMessage((payload) => {
+      const notificationTitle = payload.notification.title;
+      const notificationBody = cleanHTML(payload.notification.body);
+      const notificationOptions = {
+        body: notificationBody,
+      };
+
+      return self.registration.showNotification(notificationTitle, notificationOptions);
+    });
+  }
 });
