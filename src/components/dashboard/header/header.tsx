@@ -59,8 +59,15 @@ export default function Header() {
       <header className="w-full h-16 flex items-center justify-between px-6 bg-white">
         <div className="flex justify-between items-center w-full md:hidden">
           <div className="flex justify-center w-full">
-            <div className="h-8 w-auto mb-20 mt-2">
-              <Link href="/">{mainLogo}</Link>
+          <div className="h-8 w-auto mb-8 mt-2">
+              <Link href="/">
+                <Image
+                  src="/assets/image/nurse_logo.png"
+                  alt="nurse_logo"
+                  width={110}
+                  height={82}
+                />
+              </Link>
             </div>
           </div>
         </div>

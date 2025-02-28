@@ -161,6 +161,37 @@ export default function DashboardJobsLayout({ data }: any) {
       render: (row) => decryptData(row?.genderPreference ?? '', secretKey),
     },
     {
+      label: "Document",
+      accessor: "documentUrl",
+      render: (row: any) => (
+        <button
+        type="button"
+        onClick={() => {
+          const url = row?.documentUrl?.signed_url;
+          if (url) {
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "downloaded-image.png"; // Default filename
+            link.target = "_blank"; // Open in new tab
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          } else {
+            console.error("No URL available for download.");
+          }
+        }}
+        disabled={!row?.documentUrl?.signed_url} // Disable button if URL is empty
+        className={`border border-solid rounded-lg px-3 py-1 text-sm text-center ${
+          row?.documentUrl?.signed_url
+            ? "text-lynx-blue-100 border-lynx-blue-100"
+            : "!bg-white border-gray-600 cursor-not-allowed"
+        }`}
+      >
+        <div className="flex justify-between gap-2">View</div>
+      </button>
+      ),
+    },
+    {
       label: "Additional Information",
       accessor: "information",
       render: (row) => renderAdditionalInfo(row),

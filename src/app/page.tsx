@@ -10,8 +10,8 @@ export default function page() {
         <Image
           src="/assets/image/nurse_logo.png"
           alt="nurse_logo"
-          width={145}
-          height={48}
+          width={160}
+          height={82}
         />
       </Link>
       <div className="bg-white  max-w-[528px] w-full py-10 px-8 rounded-xl shadow-lg xl:px-6">
