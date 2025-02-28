@@ -5,12 +5,11 @@ import Link from "next/link";
 import { deleteCookie } from "cookies-next";
 import Image from "next/image";
 import {
-  mainLogo,
   dashboardSelected,
   availableJobs,
   signOut,
   hamBurger,
-  myJobs
+  myJobs,
 } from "../../../../public/assets/svgIcons/svgIcons";
 import { decryptData } from "@/helper/dataEncrypt";
 import { usePathname } from "next/navigation";
@@ -56,7 +55,9 @@ export default function Sidebar({ userData }: SidebarProps) {
     return (
       navItems.find(
         (item) => item.href.split("/").filter(Boolean).pop() === lastSegment
-      )?.href || navItems[0]?.href || "/dashboard"
+      )?.href ||
+      navItems[0]?.href ||
+      "/dashboard"
     );
   };
 
@@ -111,7 +112,14 @@ export default function Sidebar({ userData }: SidebarProps) {
         }`}
       >
         <div className="hidden md:flex items-center px-6 py-4">
-          <Link href="/dashboard">{mainLogo}</Link>
+          <Link href="/dashboard">
+            <Image
+              src="/assets/image/nurse_logo.png"
+              alt="nurse_logo"
+              width={160}
+              height={82}
+            />
+          </Link>
         </div>
         <div className="flex items-center px-6 py-4 md:hidden mb-2">
           <Image
