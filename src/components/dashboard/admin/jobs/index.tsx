@@ -203,38 +203,38 @@ export default function DashboardJobsLayout({ data }: any) {
         <div>{row?.immediateCare === 1 ? <span className="text-[#00BA34] font-se">Yes</span> : <span className=" text-red-600">No</span>}</div>
       ),
     },
-    {
-      label: "Actions",
-      accessor: "actions",
-      render: (row: any) => (
-        <div className="flex space-x-2">
-          <button
-            type="button"
-            onClick={() => {
-              setIsModalOpen(true);
-              setAcceptedTitle("accept");
-              setApplicantId(row?.id);
-            }}
-            disabled={row?.isVerified === 1}
-            className="text-lynx-blue-100 border border-solid border-lynx-blue-100 rounded-lg px-3 py-1 text-sm text-center"
-          >
-            <div className="flex justify-between gap-2">Accept{acceptIcon}</div>
-          </button>
-          <button
-            type="button"
-            disabled={row?.isVerified === 0}
-            onClick={() => {
-              setIsModalOpen(true);
-              setAcceptedTitle("cancel");
-              setApplicantId(row?.id);
-            }}
-            className="text-lynx-orange-100 border border-solid border-lynx-orange-100 rounded-lg px-3 py-1 text-sm text-center"
-          >
-            <div className="flex justify-between gap-2">Cancel{rejectIcon}</div>
-          </button>
-        </div>
-      ),
-    },
+    // {
+    //   label: "Actions",
+    //   accessor: "actions",
+    //   render: (row: any) => (
+    //     <div className="flex space-x-2">
+    //       <button
+    //         type="button"
+    //         onClick={() => {
+    //           setIsModalOpen(true);
+    //           setAcceptedTitle("accept");
+    //           setApplicantId(row?.id);
+    //         }}
+    //         disabled={row?.isVerified === 1}
+    //         className="text-lynx-blue-100 border border-solid border-lynx-blue-100 rounded-lg px-3 py-1 text-sm text-center"
+    //       >
+    //         <div className="flex justify-between gap-2">Accept{acceptIcon}</div>
+    //       </button>
+    //       <button
+    //         type="button"
+    //         disabled={row?.isVerified === 0}
+    //         onClick={() => {
+    //           setIsModalOpen(true);
+    //           setAcceptedTitle("cancel");
+    //           setApplicantId(row?.id);
+    //         }}
+    //         className="text-lynx-orange-100 border border-solid border-lynx-orange-100 rounded-lg px-3 py-1 text-sm text-center"
+    //       >
+    //         <div className="flex justify-between gap-2">Cancel{rejectIcon}</div>
+    //       </button>
+    //     </div>
+    //   ),
+    // },
   ];
   const startDate = showDetails?.startDate ? format(new Date(showDetails?.startDate), "MMM d, yyyy") : 'N/A';
   const endDate = showDetails?.endDate ? format(new Date(showDetails?.endDate), "MMM d, yyyy") : 'N/A';
