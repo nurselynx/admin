@@ -71,7 +71,7 @@ const DetailsAdmin: React.FC<DetailsHealthcareProps> = ({
           </h1>
         </div>
 
-        {renderDetail("Facility Name", facilityName)}
+        {renderDetail("Organization Name", facilityName)}
         <hr />
         {renderDetail("Email", email)}
         <hr />
@@ -86,9 +86,11 @@ const DetailsAdmin: React.FC<DetailsHealthcareProps> = ({
         <hr />
         {renderDetail("License Number", licenseNumber)}
         <hr />
-        {renderDetail("License Expiry Date", licenseExpiryDate)}
+        {renderDetail("License Expiration Date", licenseExpiryDate)}
         <hr />
-        <h2 className="text-sm mb-2 font-normal text-lynx-grey-700 mt-2">License Url</h2>
+        <h2 className="text-sm mb-2 font-normal text-lynx-grey-700 mt-2">
+          License Url
+        </h2>
         <button
           type="button"
           onClick={() => {
@@ -117,7 +119,7 @@ const DetailsAdmin: React.FC<DetailsHealthcareProps> = ({
             onClick={() => {
               setIsModalOpen(true);
               jobAcceptedTitle("accept");
-              setApplicantId(userId)
+              setApplicantId(userId);
             }}
           >
             Accept
@@ -128,7 +130,7 @@ const DetailsAdmin: React.FC<DetailsHealthcareProps> = ({
             onClick={() => {
               setIsModalOpen(true);
               jobAcceptedTitle("cancel");
-              setApplicantId(userId)
+              setApplicantId(userId);
             }}
           >
             Cancel

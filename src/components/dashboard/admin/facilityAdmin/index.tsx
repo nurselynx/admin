@@ -75,8 +75,8 @@ export default function DashboardFacilityLayout({ data }: any) {
         setIsModalOpen(false);
         toast.success(
           acceptedTitle === "accept"
-            ? "The facility user's account has been approved successfully."
-            : "The facility user's account has been rejected successfully."
+            ? "The organization user's account has been approved successfully."
+            : "The organization user's account has been rejected successfully."
         );
       }
     } catch (error: any) {
@@ -86,9 +86,41 @@ export default function DashboardFacilityLayout({ data }: any) {
 
   const columns: Column[] = [
     {
-      label: "Facility Name",
+      label: "Organization Name",
       accessor: "facilityName",
       render: (row) => decryptData(row?.facilityName, secretKey),
+    },
+    {
+      label: "Actions",
+      accessor: "actions",
+      render: (row: any) => (
+        <div className="flex space-x-2">
+          <button
+            type="button"
+            onClick={() => {
+              setIsModalOpen(true);
+              setAcceptedTitle("accept");
+              setApplicantId(row?.userId);
+            }}
+            disabled={row?.userIsVerified === 1}
+            className="text-lynx-blue-100 border border-solid border-lynx-blue-100 rounded-lg px-3 py-1 text-sm text-center"
+          >
+            <div className="flex justify-between gap-2">Accept{acceptIcon}</div>
+          </button>
+          <button
+            type="button"
+            disabled={row?.userIsVerified === 0}
+            onClick={() => {
+              setIsModalOpen(true);
+              setAcceptedTitle("cancel");
+              setApplicantId(row?.userId);
+            }}
+            className="text-lynx-orange-100 border border-solid border-lynx-orange-100 rounded-lg px-3 py-1 text-sm text-center"
+          >
+            <div className="flex justify-between gap-2">Cancel{rejectIcon}</div>
+          </button>
+        </div>
+      ),
     },
     {
       label: "Email",
@@ -123,7 +155,7 @@ export default function DashboardFacilityLayout({ data }: any) {
       render: (row) => decryptData(row?.licenseNumber, secretKey),
     },
     {
-      label: "License Expiry Date",
+      label: "License Expiration Date",
       accessor: "licenseExpiryDate",
       render: (row: any) =>
         format(new Date(row?.licenseExpiryDate), "MMM d, yyyy"),
@@ -154,45 +186,16 @@ export default function DashboardFacilityLayout({ data }: any) {
         </button>
       ),
     },
-    {
-      label: "Actions",
-      accessor: "actions",
-      render: (row: any) => (
-        <div className="flex space-x-2">
-          <button
-            type="button"
-            onClick={() => {
-              setIsModalOpen(true);
-              setAcceptedTitle("accept");
-              setApplicantId(row?.userId);
-            }}
-            disabled={row?.userIsVerified === 1}
-            className="text-lynx-blue-100 border border-solid border-lynx-blue-100 rounded-lg px-3 py-1 text-sm text-center"
-          >
-            <div className="flex justify-between gap-2">Accept{acceptIcon}</div>
-          </button>
-          <button
-            type="button"
-            disabled={row?.userIsVerified === 0}
-            onClick={() => {
-              setIsModalOpen(true);
-              setAcceptedTitle("cancel");
-              setApplicantId(row?.userId);
-            }}
-            className="text-lynx-orange-100 border border-solid border-lynx-orange-100 rounded-lg px-3 py-1 text-sm text-center"
-          >
-            <div className="flex justify-between gap-2">Cancel{rejectIcon}</div>
-          </button>
-        </div>
-      ),
-    },
   ];
-  const decryptedNumber = decryptData(showDetails?.primaryContact ?? '', secretKey);
+  const decryptedNumber = decryptData(
+    showDetails?.primaryContact ?? "",
+    secretKey
+  );
 
   return (
     <div className="m-0 md:p-6">
       <div className="grid  p-6 bg-white font-medium text-lg rounded-t-3xl text-center md:text-left">
-        Facility User Details
+        Organization User Details
         <hr className="block mt-2 md:hidden" />
       </div>
       {showDetails ? (

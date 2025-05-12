@@ -26,12 +26,12 @@ const DashboardPage: React.FC = async () => {
       image: "/assets/image/facility_managers.png",
     },
     {
-      title: "Registered Facility Managers",
+      title: "Registered Organization Managers",
       value: getData?.item?.totalFacility?.count || 0,
       image: "/assets/image/facility_managers.png",
     },
     {
-      title: "Pending Approvals for Facility Certifications",
+      title: "Pending Approvals for Organization Certifications",
       value: getData?.item?.isFacilityApproval?.count || 0,
       image: "/assets/image/approvals.png",
     },

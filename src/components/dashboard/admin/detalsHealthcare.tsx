@@ -20,15 +20,14 @@ interface DetailsHealthcareProps {
   setIsModalOpen: (value: boolean) => void;
   jobAcceptedTitle: (status: string) => void; // Corrected this line
   setApplicantId?: any;
-  expertise?: string;
-  language?: string
-  gender: string
-  userId: string
-  image?: any
+  language?: string;
+  gender: string;
+  userId: string;
+  image?: any;
   certificateNumber: string;
 }
 
-const DetalsHealthcareAdmin : React.FC<DetailsHealthcareProps> = ({
+const DetalsHealthcareAdmin: React.FC<DetailsHealthcareProps> = ({
   setShowDetails,
   facilityName,
   email,
@@ -39,11 +38,10 @@ const DetalsHealthcareAdmin : React.FC<DetailsHealthcareProps> = ({
   jobAcceptedTitle,
   gender,
   setIsModalOpen,
-  expertise,
   setApplicantId,
   userId,
   image,
-  certificateNumber
+  certificateNumber,
 }) => {
   const renderDetail = (
     label: string,
@@ -75,13 +73,11 @@ const DetalsHealthcareAdmin : React.FC<DetailsHealthcareProps> = ({
           </h1>
         </div>
 
-        {renderDetail("Facility Name", facilityName)}
+        {renderDetail("Organization Name", facilityName)}
         <hr />
         {renderDetail("Email", email)}
         <hr />
         {renderDetail("Title", title)}
-        <hr />
-        {renderDetail("Expertise", expertise)}
         <hr />
         {renderDetail("Language", language)}
         <hr />
@@ -96,7 +92,9 @@ const DetalsHealthcareAdmin : React.FC<DetailsHealthcareProps> = ({
         <hr />
         {renderDetail("Certificate Number", certificateNumber)}
         <hr />
-        <h2 className="text-sm mb-2 font-normal text-lynx-grey-700 mt-2">Certificate</h2>
+        <h2 className="text-sm mb-2 font-normal text-lynx-grey-700 mt-2">
+          Certificate
+        </h2>
         <button
           type="button"
           onClick={() => {
@@ -125,7 +123,7 @@ const DetalsHealthcareAdmin : React.FC<DetailsHealthcareProps> = ({
             onClick={() => {
               setIsModalOpen(true);
               jobAcceptedTitle("accept");
-              setApplicantId(userId)
+              setApplicantId(userId);
             }}
           >
             Accept
@@ -136,7 +134,7 @@ const DetalsHealthcareAdmin : React.FC<DetailsHealthcareProps> = ({
             onClick={() => {
               setIsModalOpen(true);
               jobAcceptedTitle("cancel");
-              setApplicantId(userId)
+              setApplicantId(userId);
             }}
           >
             Cancel

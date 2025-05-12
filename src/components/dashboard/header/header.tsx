@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { getCookie } from "cookies-next";
+import { deleteCookie, getCookie } from "cookies-next";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -11,7 +11,7 @@ import { decryptData } from "@/helper/dataEncrypt";
 import { getMessaging, onMessage } from "firebase/messaging";
 import useFcmToken from "@/components/firebase/useFcmToken";
 import firebaseApp from "@/components/firebase/firebase";
-import { GET_NOTIFICATION} from "@/constants/api";
+import { GET_NOTIFICATION } from "@/constants/api";
 import axios from "axios";
 import NotificationPanel from "../notificationPanel/notificationPanel";
 import UseTokenRefresher from "./useTokenRefresher";
@@ -33,11 +33,15 @@ export default function Header() {
       });
       return setDataNotifications(response?.data?.items);
     } catch (err) {
+      ["authToken", "dataUser", "refreshToken", "forgetUserEmail"].forEach(
+        (cookieKey) => {
+          deleteCookie(cookieKey);
+        }
+      );
       console.error(err); // Add error handling
       return null;
     }
   };
-
 
   useEffect(() => {
     if (typeof window !== "undefined" && "serviceWorker" in navigator) {
@@ -55,11 +59,11 @@ export default function Header() {
 
   return (
     <>
-    <UseTokenRefresher />
-      <header className="w-full h-16 flex items-center justify-between px-6 bg-white">
+      <UseTokenRefresher />
+      <header className="w-full h-16 flex items-center justify-between px-6 bg-[#9153A1]">
         <div className="flex justify-between items-center w-full md:hidden">
           <div className="flex justify-center w-full">
-          <div className="h-8 w-auto mb-8 mt-2">
+            <div className="h-8 w-auto mb-8 mt-2">
               <Link href="/">
                 <Image
                   src="/assets/image/nurse_logo.png"
@@ -81,31 +85,27 @@ export default function Header() {
                 fetchNotificationData();
               }}
               aria-label="Notifications"
-              className="text-gray-500 relative"
+              className="text-gray-500 relative hidden"
             >
               {bellIcon}
               {isNotificationsNew && (
                 <span className=" bg-red-500 h-3 w-3 rounded-full absolute top-0 right-0"></span>
               )}
             </button>
-              <Image
-                src="/assets/image/profileIcon.png"
-                alt="Profile Icon"
-                className="w-8 h-8 rounded-full"
-                width={32}
-                height={32}
-              />
-              <p className="text-sm font-medium text-gray-700">
-                {decryptData(userData?.fullName, secretKey)}
-              </p>
-            </div>
+            <Image
+              src="/assets/image/profileIcon.png"
+              alt="Profile Icon"
+              className="w-8 h-8 rounded-full"
+              width={32}
+              height={32}
+            />
+            <p className="text-sm font-medium text-white">
+              {decryptData(userData?.fullName, secretKey)}
+            </p>
           </div>
+        </div>
       </header>
-      <NotificationPanel
-        notifications={notifications}
-        setIsOpen={setIsOpen}
-        isOpen={isOpen}
-      />
+      <NotificationPanel notifications={notifications} />
     </>
   );
 }

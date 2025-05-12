@@ -44,14 +44,16 @@ const Table: React.FC<TableProps> = ({ columns, data, pagination }) => {
                   {columns.map((column) => (
                     <td
                       key={column.accessor}
-                      className="px-2 py-6 text-sm text-gray-700  overflow-hidden text-ellipsis"
+                      className="px-2 py-6 text-sm text-gray-700   text-ellipsis"
                       title={
                         typeof row[column.accessor] === "string"
                           ? row[column.accessor]
                           : ""
                       }
                     >
-                      {column.render ? column.render(row) : row[column.accessor]}
+                      {column.render
+                        ? column.render(row)
+                        : row[column.accessor]}
                     </td>
                   ))}
                 </tr>
@@ -65,9 +67,7 @@ const Table: React.FC<TableProps> = ({ columns, data, pagination }) => {
       {pagination && (
         <div className="items-center justify-center py-4 hidden md:flex">
           <button
-            onClick={() =>
-              pagination.onPageChange(pagination.currentPage - 1)
-            }
+            onClick={() => pagination.onPageChange(pagination.currentPage - 1)}
             disabled={pagination.currentPage === 1}
             className={`px-2 py-1 mx-1 text-gray-600 rounded ${
               pagination.currentPage === 1
@@ -93,9 +93,7 @@ const Table: React.FC<TableProps> = ({ columns, data, pagination }) => {
             </button>
           ))}
           <button
-            onClick={() =>
-              pagination.onPageChange(pagination.currentPage + 1)
-            }
+            onClick={() => pagination.onPageChange(pagination.currentPage + 1)}
             disabled={pagination.currentPage === pagination.totalPages}
             className={`px-2 py-1 mx-1 text-gray-600 rounded ${
               pagination.currentPage === pagination.totalPages

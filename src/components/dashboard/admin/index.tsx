@@ -29,7 +29,6 @@ interface TableData {
   title: string;
   date: string;
   schedule: string;
-  expertise: string;
   actions: any;
   language?: string;
   address: string;
@@ -95,6 +94,36 @@ export default function DashboardHealthLayout({ data }: any) {
       render: (row) => decryptData(row?.userName, secretKey),
     },
     {
+      label: "Actions",
+      accessor: "actions",
+      render: (row: any) => (
+        <div className="flex space-x-2">
+          <button
+            disabled={row?.userIsVerified === 1}
+            onClick={() => {
+              setIsModalOpen(true);
+              setAcceptedTitle("accept");
+              setApplicantId(row?.userId);
+            }}
+            className="text-lynx-blue-100 border border-solid border-lynx-blue-100 rounded-lg px-3 py-1 text-sm text-center"
+          >
+            <div className="flex justify-between gap-2">Accept{acceptIcon}</div>
+          </button>
+          <button
+            disabled={row?.userIsVerified === 0}
+            onClick={() => {
+              setIsModalOpen(true);
+              setAcceptedTitle("cancel");
+              setApplicantId(row?.userId);
+            }}
+            className="text-lynx-orange-100 border border-solid border-lynx-orange-100 rounded-lg px-3 py-1 text-sm text-center"
+          >
+            <div className="flex justify-between gap-2">Cancel{rejectIcon}</div>
+          </button>
+        </div>
+      ),
+    },
+    {
       label: "Email",
       accessor: "userEmail",
     },
@@ -111,12 +140,8 @@ export default function DashboardHealthLayout({ data }: any) {
     {
       label: "Language",
       accessor: "language",
-      render: (row) => decryptData(row?.language ?? "", secretKey),
-    },
-    {
-      label: "Expertise",
-      accessor: "expertise",
-      render: (row) => decryptData(row?.expertise ?? "", secretKey),
+      render: (row: any) =>
+        row?.language?.length > 1 ? row?.language?.join(", ") : row?.language,
     },
     {
       label: "Date",
@@ -167,39 +192,12 @@ export default function DashboardHealthLayout({ data }: any) {
         </button>
       ),
     },
-    {
-      label: "Actions",
-      accessor: "actions",
-      render: (row: any) => (
-        <div className="flex space-x-2">
-          <button
-            disabled={row?.userIsVerified === 1}
-            onClick={() => {
-              setIsModalOpen(true);
-              setAcceptedTitle("accept");
-              setApplicantId(row?.userId);
-            }}
-            className="text-lynx-blue-100 border border-solid border-lynx-blue-100 rounded-lg px-3 py-1 text-sm text-center"
-          >
-            <div className="flex justify-between gap-2">Accept{acceptIcon}</div>
-          </button>
-          <button
-            disabled={row?.userIsVerified === 0}
-            onClick={() => {
-              setIsModalOpen(true);
-              setAcceptedTitle("cancel");
-              setApplicantId(row?.userId);
-            }}
-            className="text-lynx-orange-100 border border-solid border-lynx-orange-100 rounded-lg px-3 py-1 text-sm text-center"
-          >
-            <div className="flex justify-between gap-2">Cancel{rejectIcon}</div>
-          </button>
-        </div>
-      ),
-    },
   ];
 
-  const decryptedNumber = decryptData(showDetails?.userPrimaryNumber ?? '', secretKey);
+  const decryptedNumber = decryptData(
+    showDetails?.userPrimaryNumber ?? "",
+    secretKey
+  );
 
   return (
     <div className="m-0 md:p-6">
@@ -213,7 +211,6 @@ export default function DashboardHealthLayout({ data }: any) {
           facilityName={decryptData(showDetails?.userName, secretKey)}
           email={showDetails?.userEmail}
           title={decryptData(showDetails?.title, secretKey)}
-          expertise={decryptData(showDetails?.expertise ?? "", secretKey)}
           language={decryptData(showDetails?.language ?? "", secretKey)}
           date={showDetails?.userCreatedAt}
           primaryContact={formatPhoneNumber(decryptedNumber)}

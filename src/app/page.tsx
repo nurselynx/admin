@@ -5,7 +5,7 @@ import LoginForm from "@/components/auth/logIn";
 export default function page() {
 
   return (
-    <div className="w-full h-screen bg-[#ebf3ff] bg-opacity-50 flex items-center justify-center shadow-xl flex-col mintablet:px-4">
+    <div className="w-full h-screen bg-[#9153A1]  flex items-center justify-center  flex-col mintablet:px-4">
       <Link href="/" className="mb-8">
         <Image
           src="/assets/image/nurse_logo.png"

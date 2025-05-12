@@ -182,21 +182,21 @@ const signOut = (
   >
     <path
       d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9"
-      stroke="#E86D65"
+      stroke="#fff"
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M16 17L21 12L16 7"
-      stroke="#E86D65"
+      stroke="#fff"
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M21 12H9"
-      stroke="#E86D65"
+      stroke="#fff"
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -243,14 +243,14 @@ const bellIcon = (
   >
     <path
       d="M12.02 2.91016C8.71 2.91016 6.02 5.60016 6.02 8.91016V11.8002C6.02 12.4102 5.76 13.3402 5.45 13.8602L4.3 15.7702C3.59 16.9502 4.08 18.2602 5.38 18.7002C9.69 20.1402 14.34 20.1402 18.65 18.7002C19.86 18.3002 20.39 16.8702 19.73 15.7702L18.58 13.8602C18.28 13.3402 18.02 12.4102 18.02 11.8002V8.91016C18.02 5.61016 15.32 2.91016 12.02 2.91016Z"
-      stroke="#878D97"
+      stroke="currentColor"
       strokeWidth="1.5"
       strokeMiterlimit="10"
       strokeLinecap="round"
     />
     <path
       d="M13.87 3.19994C13.56 3.10994 13.24 3.03994 12.91 2.99994C11.95 2.87994 11.03 2.94994 10.17 3.19994C10.46 2.45994 11.18 1.93994 12.02 1.93994C12.86 1.93994 13.58 2.45994 13.87 3.19994Z"
-      stroke="#878D97"
+      stroke="currentColor"
       strokeWidth="1.5"
       strokeMiterlimit="10"
       strokeLinecap="round"
@@ -258,12 +258,13 @@ const bellIcon = (
     />
     <path
       d="M15.02 19.0601C15.02 20.7101 13.67 22.0601 12.02 22.0601C11.2 22.0601 10.44 21.7201 9.9 21.1801C9.36 20.6401 9.02 19.8801 9.02 19.0601"
-      stroke="#878D97"
+      stroke="currentColor"
       strokeWidth="1.5"
       strokeMiterlimit="10"
     />
   </svg>
 );
+
 
 const lessThan = (
   <svg
