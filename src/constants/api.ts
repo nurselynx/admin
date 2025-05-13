@@ -12,3 +12,8 @@ export const GET_LANDING_DETAILS = "/admin/get-landing-page";
 export const UPLOAD = "/upload";
 export const GET_DASHBOARD = "/admin/get-dashboard";
 export const GET_NOTIFICATION = "/notification";
+
+// jobs
+export const GET_MEDICAL_JOBS = "/admin/get-medical-jobs";
+export const GET_NON_MEDICAL_JOB = "/admin/get-non-medical-jobs";
+export const GET_STAFFING_JOB = "//admin/get-staff-request-jobs";

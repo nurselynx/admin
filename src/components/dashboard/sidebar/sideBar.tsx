@@ -10,6 +10,7 @@ import {
   signOut,
   hamBurger,
   myJobs,
+  bellIcon,
 } from "../../../../public/assets/svgIcons/svgIcons";
 import { decryptData } from "@/helper/dataEncrypt";
 import { usePathname } from "next/navigation";
@@ -37,9 +38,10 @@ type SidebarProps = {
 const navItems = [
   { href: "/dashboard", icon: dashboardSelected, label: "Dashboard" },
   { href: "/health-care", icon: availableJobs, label: "Health-care" },
-  { href: "/facility", icon: availableJobs, label: "Facility" },
+  { href: "/facility", icon: availableJobs, label: "Organization" },
   { href: "/jobs", icon: myJobs, label: "Jobs" },
   { href: "/cms", icon: dashboardSelected, label: "CMS" },
+  { href: "/notification", icon: bellIcon, label: "Notifications" },
 ];
 
 export default function Sidebar({ userData }: SidebarProps) {
@@ -68,10 +70,10 @@ export default function Sidebar({ userData }: SidebarProps) {
       <li key={href}>
         <Link href={href}>
           <p
-            className={`flex items-center px-6 py-3 gap-2 font-normal hover:bg-lynx-blue-700 hover:text-lynx-blue-100 hover:font-semibold ${
+            className={`flex items-center px-6 py-3 gap-2 font-normal hover:bg-white hover:text-lynx-blue-100 hover:font-semibold ${
               activeRoute === href
-                ? "bg-lynx-blue-700 text-lynx-blue-100 font-semibold"
-                : "text-lynx-grey-1100"
+                ? "bg-white text-lynx-blue-100 font-semibold"
+                : "text-white"
             }`}
           >
             {icon}
@@ -107,7 +109,7 @@ export default function Sidebar({ userData }: SidebarProps) {
 
       <div
         id="sidebar"
-        className={`fixed h-screen bg-white flex flex-col w-64 transform transition-transform duration-300 ease-in-out z-50 ${
+        className={`fixed h-screen bg-[#9153A1] flex flex-col w-64 transform transition-transform duration-300 ease-in-out z-50 ${
           isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
@@ -142,7 +144,7 @@ export default function Sidebar({ userData }: SidebarProps) {
           <button
             onClick={handleSignOut}
             type="button"
-            className="flex items-center text-lynx-orange-100 gap-2 mb-8 bg-transparent border-none"
+            className="flex items-center text-white gap-2 mb-8 bg-transparent border-none"
           >
             {signOut}
             Sign Out
