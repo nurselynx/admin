@@ -31,7 +31,7 @@ const Table: React.FC<TableProps> = ({ columns, data, pagination }) => {
                 {columns.map((column) => (
                   <th
                     key={column.accessor}
-                    className="px-2 py-3 font-medium text-sm text-lynx-blue-400 w-[215px] "
+                    className="px-2 py-3 font-medium text-sm text-lynx-blue-400 w-[300px] "
                   >
                     {column.label}
                   </th>
