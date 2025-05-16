@@ -3,11 +3,7 @@ import { cookies } from "next/headers";
 import { ADMIN_HEALTHCARE } from "@/constants/api";
 import DashboardAdminLayout from "@/components/dashboard/admin";
 
-export default async function page({
-  searchParams,
-}: {
-  searchParams: any;
-}) {
+export default async function page({ searchParams }: { searchParams: any }) {
   // Await searchParams to resolve it before using its properties
   const params = await searchParams;
 
@@ -28,5 +24,5 @@ export default async function page({
       ? getData?.items
       : getData?.items?.filter((item: any) => item?.healthcareId === health);
 
-  return <DashboardAdminLayout data={data} />;
+  return <DashboardAdminLayout healthData={data} />;
 }

@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { format, isToday, isYesterday, parseISO, isValid } from "date-fns";
 
 type Notification = {
   id: number;
@@ -11,6 +10,7 @@ type Notification = {
   type: string; // Narrowed types for better type safety
   status: string;
   refId?: string;
+  date?: string;
 };
 
 type NotificationPanelProps = {
@@ -28,20 +28,6 @@ const getStatusIcon = (status: Notification["status"]) => {
   return icons[status?.toLowerCase()?.trim()] || "/assets/image/accepted.png";
 };
 
-const formatDate = (inputDate: string | Date) => {
-  const date = typeof inputDate === "string" ? parseISO(inputDate) : inputDate;
-
-  if (!isValid(date)) return "Invalid date";
-
-  if (isToday(date)) {
-    return `Today at ${format(date, "hh:mm a")}`;
-  }
-  if (isYesterday(date)) {
-    return `Yesterday at ${format(date, "hh:mm a")}`;
-  }
-  return `${format(date, "MMMM d")} at ${format(date, "hh:mm a")}`;
-};
-
 const NotificationPanel: React.FC<NotificationPanelProps> = ({
   notifications,
 }) => {
@@ -50,7 +36,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({
       {(notifications?.length || 0) > 0 ? (
         <div className="space-y-4 bg-white p-4 max-h-[700px] overflow-y-auto custom-scrollbar">
           {notifications?.map(
-            ({ id, type, title, message, createdAt, status, refId }) => (
+            ({ id, type, title, message, status, refId, date }) => (
               <div
                 key={id}
                 className="p-3 border-b border-gray-200 bg-[#F6FAFF]"
@@ -86,9 +72,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({
                         View Details
                       </Link>
                     )}
-                    <p className="text-sm font-normal text-[#A0A0A0]">
-                      {formatDate(createdAt)}
-                    </p>
+                    <p className="text-sm font-normal text-[#A0A0A0]">{date}</p>
                   </div>
                 </div>
               </div>

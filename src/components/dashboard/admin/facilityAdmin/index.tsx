@@ -17,6 +17,7 @@ import ConfirmationModal from "../confirmationModal";
 import HealthcareResponsiveTableCard from "../tableResponsive";
 import { decryptData } from "@/helper/dataEncrypt";
 import { formatPhoneNumber } from "@/helper/index";
+import { useSearchFilter } from "@/components/useSearchFilter/useSearchFilter";
 
 const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY;
 
@@ -37,6 +38,7 @@ interface TableData {
   licenseUrl: any;
   address: string;
   licenseExpiryDate: string;
+  preferredRate?: string;
 }
 
 type Column = {
@@ -45,13 +47,24 @@ type Column = {
   render?: (row: TableData) => React.ReactNode;
 };
 
-export default function DashboardFacilityLayout({ data }: any) {
+export default function DashboardFacilityLayout({ facilityData }: any) {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [applicantId, setApplicantId] = useState(0);
   const [acceptedTitle, setAcceptedTitle] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showDetails, setShowDetails] = useState<TableData | null>(null);
+
+  let data = facilityData;
+  const { searchQuery, setSearchQuery, filteredData } =
+    useSearchFilter(facilityData);
+
+  data = filteredData;
+
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
 
   const { makeRequest: updateHealth, loading } = useAxios({
     url: `${ACTION_ADMIN}/${applicantId}`,
@@ -127,6 +140,14 @@ export default function DashboardFacilityLayout({ data }: any) {
       accessor: "userEmail",
     },
     {
+      label: "Desired Rate",
+      accessor: "preferredRate",
+      render: (row) =>
+        row?.preferredRate
+          ? decryptData(row?.preferredRate ?? "", secretKey)
+          : "N/A",
+    },
+    {
       label: "Type",
       accessor: "facilityType",
       render: (row) => decryptData(row?.facilityType, secretKey),
@@ -197,6 +218,13 @@ export default function DashboardFacilityLayout({ data }: any) {
       <div className="grid  p-6 bg-white font-medium text-lg rounded-t-3xl text-center md:text-left">
         Organization User Details
         <hr className="block mt-2 md:hidden" />
+        <input
+          type="text"
+          placeholder="Search Organization Name	"
+          value={searchQuery}
+          onChange={(e) => handleSearchChange(e.target.value)}
+          className={`w-full p-2 text-gray-700 bg-white rounded-md  max-w-[310px] text-[15px] border mt-[13px] border-solid border-gray-700 xl:max-w-full`}
+        />
       </div>
       {showDetails ? (
         <DetailsAdmin

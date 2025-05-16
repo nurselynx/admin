@@ -17,6 +17,7 @@ import ConfirmationModal from "./confirmationModal";
 import HealthcareResponsiveTableCard from "./tableResponsive";
 import DetalsHealthcareAdmin from "./detalsHealthcare";
 import { formatPhoneNumber } from "@/helper/index";
+import { useSearchFilter } from "@/components/useSearchFilter/useSearchFilter";
 
 const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY;
 
@@ -39,6 +40,7 @@ interface TableData {
   userId: string;
   certificateUrl: any;
   certificateNumber: string;
+  preferredRate?: string;
 }
 
 type Column = {
@@ -47,7 +49,7 @@ type Column = {
   render?: (row: TableData) => React.ReactNode;
 };
 
-export default function DashboardHealthLayout({ data }: any) {
+export default function DashboardHealthLayout({ healthData }: any) {
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [applicantId, setApplicantId] = useState(0);
@@ -59,6 +61,19 @@ export default function DashboardHealthLayout({ data }: any) {
     url: `${ACTION_ADMIN}/${applicantId}`,
     method: "post",
   });
+
+  let data = healthData;
+  const { searchQuery, setSearchQuery, filteredData } =
+    useSearchFilter(healthData);
+
+  data = filteredData;
+
+  console.log(healthData, "healthData");
+
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
 
   const totalPages = Math.ceil(data?.length / 10);
   const handleModalClose = () => setIsModalOpen(false);
@@ -133,6 +148,14 @@ export default function DashboardHealthLayout({ data }: any) {
       render: (row) => decryptData(row?.title, secretKey),
     },
     {
+      label: "Desired Rate",
+      accessor: "preferredRate",
+      render: (row) =>
+        row?.preferredRate
+          ? decryptData(row?.preferredRate ?? "", secretKey)
+          : "N/A",
+    },
+    {
       label: "Address",
       accessor: "address",
       render: (row) => decryptData(row?.address, secretKey),
@@ -204,6 +227,13 @@ export default function DashboardHealthLayout({ data }: any) {
       <div className="grid bg-white p-6 font-medium text-lg rounded-t-3xl text-center md:text-left">
         Healthcare User Details
         <hr className="block mt-2 md:hidden" />
+        <input
+          type="text"
+          placeholder="Search User Name	"
+          value={searchQuery}
+          onChange={(e) => handleSearchChange(e.target.value)}
+          className={`w-full p-2 text-gray-700 bg-white rounded-md  max-w-[310px] text-[15px] border mt-[13px] border-solid border-gray-700 xl:max-w-full`}
+        />
       </div>
       {showDetails ? (
         <DetalsHealthcareAdmin

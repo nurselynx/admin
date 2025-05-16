@@ -9,6 +9,7 @@ const TableHeader: React.FC<{
   setCurrentPage?: any;
   isTabCheck?: boolean;
   link?: string;
+  setSearchQuery?: any;
 }> = ({
   tabs,
   onTabChange,
@@ -17,12 +18,14 @@ const TableHeader: React.FC<{
   setCurrentPage,
   isTabCheck,
   link,
+  setSearchQuery,
 }) => {
   const router = useRouter();
 
   const handleTabClick = (tab: string) => {
     onTabChange(tab);
-
+    setSearchQuery?.("");
+    setCurrentPage?.(1);
     if (isTabCheck && setCurrentPage) {
       setCurrentPage(1);
     }
