@@ -8,6 +8,7 @@ import TableHeader from "./tableheader";
 import HomeHealthMedical from "./homeHealthMedical";
 import HomeCareMedical from "./homeCare(Non-Medical)";
 import StaffingNeedsMedical from "./homeStaffingNeeds";
+import { useSearchFilter } from "@/components/useSearchFilter/useSearchFilter";
 
 const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY;
 
@@ -71,12 +72,23 @@ export default function DashboardJobsLayout({
     {}
   );
   const [showDetails, setShowDetails] = useState<TableData | null>(null);
-  const data =
+  const activeTabData =
     activeTab === tabs[0]
       ? getMedicalData
       : activeTab === tabs[1]
       ? getNonMedicalData
       : getStaffData;
+
+  let data = activeTabData;
+  const { searchQuery, setSearchQuery, filteredData } =
+    useSearchFilter(activeTabData);
+
+  data = filteredData;
+
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
 
   const totalPages = Math.ceil(data?.length / 10);
 
@@ -122,11 +134,20 @@ export default function DashboardJobsLayout({
       <div className="grid  p-6 bg-white font-medium text-lg rounded-t-3xl text-center md:text-left">
         Jobs Details
         <hr className="block mt-2 md:hidden" />
+        <input
+          type="text"
+          placeholder="Search Client Name"
+          value={searchQuery}
+          onChange={(e) => handleSearchChange(e.target.value)}
+          className={`w-full p-2 text-gray-700 bg-white rounded-md  max-w-[310px] text-[15px] border mt-[13px] border-solid border-gray-700 xl:max-w-full`}
+        />
         <TableHeader
           tabs={tabs}
           activeTab={activeTab}
           onTabChange={setActiveTab}
           link={link}
+          setCurrentPage={setCurrentPage}
+          setSearchQuery={setSearchQuery}
         />
       </div>
       <div className=" bg-white">
