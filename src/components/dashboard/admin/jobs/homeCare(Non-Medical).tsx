@@ -101,15 +101,11 @@ export default function HomeCareMedical({
           },
         ]
       : []),
-    ...(isStatus
-      ? [
-          {
-            label: "Status",
-            accessor: "status",
-            render: (row: any) => <StatusBadge status={row?.status ?? 0} />,
-          },
-        ]
-      : []),
+    {
+      label: "Status",
+      accessor: "status",
+      render: (row: any) => <StatusBadge status={row?.status ?? 0} />,
+    },
     {
       label: "Client Address",
       accessor: "clientAddress",
@@ -118,6 +114,12 @@ export default function HomeCareMedical({
       label: "Phone Number",
       accessor: "phoneNumber",
       render: (row) => decryptData(row?.phoneNumber ?? "", secretKey),
+    },
+    {
+      label: "Desired Rate",
+      accessor: "preferredRate",
+      render: (row) =>
+        row?.privatePay ? decryptData(row?.privatePay ?? "", secretKey) : "N/A",
     },
     {
       label: "Insurance Type",

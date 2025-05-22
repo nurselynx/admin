@@ -39,6 +39,7 @@ export interface TableDataType {
   timePreference?: string;
   languagePreference?: any;
   experience?: string
+  privatePay?: string;
 }
 
 export type Column = {

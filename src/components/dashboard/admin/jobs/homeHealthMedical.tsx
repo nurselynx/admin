@@ -70,15 +70,11 @@ export default function HomeHealthMedical({
           },
         ]
       : []),
-    ...(isStatus
-      ? []
-      : [
-          {
-            label: "Status",
-            accessor: "status",
-            render: (row: any) => <StatusBadge status={row?.status} />,
-          },
-        ]),
+    {
+      label: "Status",
+      accessor: "status",
+      render: (row: any) => <StatusBadge status={row?.status} />,
+    },
 
     ...(isAvailable
       ? [
@@ -103,6 +99,12 @@ export default function HomeHealthMedical({
       label: "Phone Number",
       accessor: "phoneNumber",
       render: (row) => decryptData(row?.phoneNumber ?? "", secretKey),
+    },
+    {
+      label: "Desired Rate",
+      accessor: "preferredRate",
+      render: (row) =>
+        row?.privatePay ? decryptData(row?.privatePay ?? "", secretKey) : "N/A",
     },
     {
       label: "Insurance Provider Name",
