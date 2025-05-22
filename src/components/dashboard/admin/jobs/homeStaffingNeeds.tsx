@@ -95,7 +95,6 @@ export default function StaffingNeedsMedical({
   setIsSuggestedProfessionals,
   fetchCandidateName,
   idNumber,
-  renderSuggestedProfessionals,
   currentPage,
   totalPages,
   setShowDetails,
@@ -110,7 +109,6 @@ export default function StaffingNeedsMedical({
   handleActionConfirm,
 }: HomeHealthMedicalProps) {
   const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY ?? "";
-  console.log(data, "*************data");
   const columns: Column[] = [
     {
       label: "Organization Name",
@@ -147,19 +145,14 @@ export default function StaffingNeedsMedical({
           },
         ]
       : []),
-    ...(isStatus
-      ? [
-          {
-            label: "Status",
-            accessor: "Status",
-            render: (row: any) => <StatusBadge status={row?.status ?? 0} />,
-          },
-        ]
-      : []),
+    {
+      label: "Status",
+      accessor: "Status",
+      render: (row: any) => <StatusBadge status={row?.status ?? 0} />,
+    },
     {
       label: "Location",
       accessor: "orgLocation",
-      render: (row) => decryptData(row?.orgLocation ?? "", secretKey),
     },
     {
       label: "Specialty and qualifications",
