@@ -27,6 +27,7 @@ interface HomeHealthMedicalProps {
   isStatus?: boolean;
   handleCancelRequest?: any;
   handleActionConfirm?: any;
+  isSuggested?: boolean;
 }
 
 export default function HomeHealthMedical({
@@ -47,6 +48,7 @@ export default function HomeHealthMedical({
   isStatus = false,
   handleCancelRequest,
   handleActionConfirm,
+  isSuggested,
 }: HomeHealthMedicalProps) {
   const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY ?? "";
   const columns: Column[] = [
@@ -55,6 +57,15 @@ export default function HomeHealthMedical({
       accessor: "clientName",
       render: (row) => decryptData(row?.clientName, secretKey),
     },
+    ...(isSuggested
+      ? [
+          {
+            label: "Suggested Professionals",
+            accessor: "suggestedProfessionals",
+            render: (row: any) => renderSuggestedProfessionals?.(row) ?? null,
+          },
+        ]
+      : []),
     // Conditionally add the "Action" column only if isRequests is true
     ...(isRequests
       ? [
@@ -65,16 +76,12 @@ export default function HomeHealthMedical({
               <CancelReject
                 applicantId={row?.applicantId}
                 handleCancelRequest={handleCancelRequest}
+                status={row?.status}
               />
             ),
           },
         ]
       : []),
-    {
-      label: "Status",
-      accessor: "status",
-      render: (row: any) => <StatusBadge status={row?.status} />,
-    },
 
     ...(isAvailable
       ? [
@@ -92,6 +99,24 @@ export default function HomeHealthMedical({
         ]
       : []),
     {
+      label: "Status",
+      accessor: "status",
+      render: (row: any) => <StatusBadge status={row?.status ?? 0} />,
+    },
+    {
+      label: "Full Details",
+      accessor: "action",
+      render: (row: any) => (
+        <button
+          type="button"
+          onClick={() => setShowDetails(row)}
+          className=" text-lynx-blue-100"
+        >
+          Details
+        </button>
+      ),
+    },
+    {
       label: "Client Address",
       accessor: "clientAddress",
     },
@@ -100,82 +125,6 @@ export default function HomeHealthMedical({
       accessor: "phoneNumber",
       render: (row) => decryptData(row?.phoneNumber ?? "", secretKey),
     },
-    {
-      label: "Desired Rate",
-      accessor: "preferredRate",
-      render: (row) =>
-        row?.privatePay ? decryptData(row?.privatePay ?? "", secretKey) : "N/A",
-    },
-    {
-      label: "Insurance Provider Name",
-      accessor: "insuranceProviderName",
-      render: (row) =>
-        decryptData(
-          row?.insuranceProviderName ?? row?.insuranceProvider ?? "",
-          secretKey
-        ),
-    },
-    {
-      label: "Group Number",
-      accessor: "groupNumber",
-      render: (row) => decryptData(row?.groupNumber ?? "", secretKey),
-    },
-    {
-      label: "Identification Number",
-      accessor: "identificationNumber",
-      render: (row) => decryptData(row?.identificationNumber ?? "", secretKey),
-    },
-    {
-      label: "Service Needed",
-      accessor: "serviceNeeded",
-      render: (row) => decryptData(row?.serviceNeeded ?? "", secretKey),
-    },
-    {
-      label: "Schedule/Availability",
-      accessor: "schedule",
-      render: (row) =>
-        row?.schedule === "00:00-24:00" ? "24 Hours" : row?.schedule,
-    },
-    {
-      label: "Frequency Required",
-      accessor: "frequencyRequired",
-      render: (row) => decryptData(row?.frequencyRequired ?? "", secretKey),
-    },
-    ...(!isMyJobs
-      ? [
-          {
-            label: "Document",
-            accessor: "documentUrl",
-            render: (row: any) => (
-              <button
-                type="button"
-                onClick={() => {
-                  const url = row?.documentUrl?.signed_url;
-                  if (url) {
-                    const link = document.createElement("a");
-                    link.href = url;
-                    link.download = "downloaded-image.png";
-                    link.target = "_blank";
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                  } else {
-                    console.error("No URL available for download.");
-                  }
-                }}
-                disabled={!row?.documentUrl?.signed_url}
-                className={`border border-solid rounded-lg px-3 py-1 text-sm text-center ${
-                  row?.documentUrl?.signed_url
-                    ? "text-lynx-blue-100 border-lynx-blue-100"
-                    : "!bg-white border-gray-600 cursor-not-allowed"
-                }`}
-              >
-                <div className="flex justify-between gap-2">View</div>
-              </button>
-            ),
-          },
-        ]
-      : []),
   ];
 
   return (
@@ -209,7 +158,7 @@ export default function HomeHealthMedical({
             key={rowIndex}
             rowIndex={rowIndex}
             patientFacilityName={decryptData(item?.clientName ?? "", secretKey)}
-            location={decryptData(item?.clientAddress, secretKey)}
+            location={item?.clientAddress}
             date={format(new Date(item?.startDate), "MMM d, yyyy")}
             schedule={
               item?.schedule === "00:00-24:00"

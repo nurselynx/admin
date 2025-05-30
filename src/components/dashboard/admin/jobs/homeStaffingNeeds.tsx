@@ -10,7 +10,6 @@ import { acceptIcon } from "../../../../../public/assets/svgIcons/svgIcons";
 import Table from "../../table/responsiveTable";
 interface HomeHealthMedicalProps {
   data: TableDataType[];
-  renderAdditionalInfo?: any;
   setIsSuggestedProfessionals?: any;
   fetchCandidateName: any;
   idNumber: number;
@@ -27,14 +26,21 @@ interface HomeHealthMedicalProps {
   isStatus?: boolean;
   handleCancelRequest?: any;
   handleActionConfirm?: any;
+  isSuggested?: boolean;
 }
 
-export const CancelReject = ({ handleCancelRequest, applicantId }: any) => {
+export const CancelReject = ({
+  handleCancelRequest,
+  applicantId,
+  status,
+}: any) => {
   return (
     <button
       type="button"
-      onClick={() => handleCancelRequest(applicantId)}
-      className="bg-transparent text-lynx-orange-700 border border-lynx-orange-700 w-36 h-7 rounded-md flex items-center justify-center"
+      onClick={() => status === 0 && handleCancelRequest(applicantId)}
+      className={`bg-transparent  border text-lynx-orange-700 ${
+        status === 0 ? "border-lynx-orange-700 " : " opacity-60"
+      } w-36 h-7 rounded-md flex items-center justify-center`}
     >
       Cancel Request{" "}
       <Image
@@ -57,7 +63,7 @@ export const AcceptAndCanel = ({
   applicantId?: number;
 }) => {
   return (
-    <div className="flex justify-between gap-2 items-center">
+    <div className="flex justify-between gap-2 items-center iPadAir:justify-center">
       <button
         type="button"
         className={`disabled:opacity-40 disabled:bg-lynx-blue-100 disabled:cursor-not-allowed ${
@@ -91,10 +97,10 @@ export const AcceptAndCanel = ({
 
 export default function StaffingNeedsMedical({
   data,
-  renderAdditionalInfo,
   setIsSuggestedProfessionals,
   fetchCandidateName,
   idNumber,
+  renderSuggestedProfessionals,
   currentPage,
   totalPages,
   setShowDetails,
@@ -107,6 +113,7 @@ export default function StaffingNeedsMedical({
   isStatus = false,
   handleCancelRequest,
   handleActionConfirm,
+  isSuggested = false,
 }: HomeHealthMedicalProps) {
   const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY ?? "";
   const columns: Column[] = [
@@ -115,6 +122,15 @@ export default function StaffingNeedsMedical({
       accessor: "orgName",
       render: (row) => decryptData(row?.orgName ?? "", secretKey),
     },
+    ...(isSuggested
+      ? [
+          {
+            label: "Suggested Professionals",
+            accessor: "suggestedProfessionals",
+            render: (row: any) => renderSuggestedProfessionals?.(row) ?? null,
+          },
+        ]
+      : []),
     // Conditionally add the "Action" column only if isRequests is true
     ...(isRequests
       ? [
@@ -125,6 +141,7 @@ export default function StaffingNeedsMedical({
               <CancelReject
                 applicantId={row?.applicantId}
                 handleCancelRequest={handleCancelRequest}
+                status={row?.status}
               />
             ),
           },
@@ -147,36 +164,25 @@ export default function StaffingNeedsMedical({
       : []),
     {
       label: "Status",
-      accessor: "Status",
+      accessor: "status",
       render: (row: any) => <StatusBadge status={row?.status ?? 0} />,
+    },
+    {
+      label: "Full Details",
+      accessor: "action",
+      render: (row: any) => (
+        <button
+          type="button"
+          onClick={() => setShowDetails(row)}
+          className=" text-lynx-blue-100"
+        >
+          Details
+        </button>
+      ),
     },
     {
       label: "Location",
       accessor: "orgLocation",
-    },
-    {
-      label: "Specialty and qualifications",
-      accessor: "speciality",
-      render: (row) => decryptData(row?.speciality ?? "", secretKey),
-    },
-    {
-      label: "Gender",
-      accessor: "genderPreference",
-      render: (row) => decryptData(row?.genderPreference ?? "", secretKey),
-    },
-    {
-      label: "Language",
-      accessor: "languagePreference",
-      render: (row) => row?.languagePreference,
-    },
-    {
-      label: "Time",
-      accessor: "timePreference",
-    },
-    {
-      label: "Additional Information",
-      accessor: "additionalInformation",
-      render: (row) => renderAdditionalInfo(row),
     },
   ];
 
@@ -209,7 +215,7 @@ export default function StaffingNeedsMedical({
             key={rowIndex}
             rowIndex={rowIndex}
             patientFacilityName={decryptData(item?.orgName ?? "", secretKey)}
-            location={decryptData(item?.orgLocation ?? "", secretKey)}
+            location={item?.orgLocation ?? ""}
             speciality={decryptData(item?.speciality ?? "", secretKey)}
             date={""}
             schedule={item?.timePreference ?? ""}
