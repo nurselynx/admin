@@ -52,6 +52,12 @@ export type Column = {
 export interface DetailsFacilityProps {
   setShowDetails: (value: null) => void; // Function to set showDetails to null
   showDetails: {
+    other?: string;
+    otherInfo?: string;
+    insuranceProvider?: string;
+    alliedHealth?: string;
+    id?: string;
+    healthId?: string
     clientName: string;
     clientAddress: string;
     phoneNumber: string;
@@ -68,10 +74,12 @@ export interface DetailsFacilityProps {
     genderPreference: string;
     medicalTitle: string;
     qualification: string;
-    startDate: string;
+    startDate: any;
     additionalInformation: string;
+    privatePay?: string;
+    longTermInsurance?: string;
     status?: any;
-    endDate: string;
+    endDate?: any;
     serviceNeeded: string;
     orgName?: string;
     orgLocation?: string;
