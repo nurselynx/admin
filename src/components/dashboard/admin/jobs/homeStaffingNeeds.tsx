@@ -38,17 +38,11 @@ export const CancelReject = ({
     <button
       type="button"
       onClick={() => status === 0 && handleCancelRequest(applicantId)}
-      className={`bg-transparent  border text-lynx-orange-700 ${
-        status === 0 ? "border-lynx-orange-700 " : " opacity-60"
+      className={`bg-transparent  border text-red-600 hidden ${
+        status === 0 ? " border-red-400 " : " cursor-not-allowed opacity-60"
       } w-36 h-7 rounded-md flex items-center justify-center`}
     >
       Cancel Request{" "}
-      <Image
-        src="/assets/image/cancel.svg"
-        alt="arrow_left"
-        width={18}
-        height={18}
-      />
     </button>
   );
 };
@@ -132,21 +126,17 @@ export default function StaffingNeedsMedical({
         ]
       : []),
     // Conditionally add the "Action" column only if isRequests is true
-    ...(isRequests
-      ? [
-          {
-            label: "Action",
-            accessor: "cancel",
-            render: (row: any) => (
-              <CancelReject
-                applicantId={row?.applicantId}
-                handleCancelRequest={handleCancelRequest}
-                status={row?.status}
-              />
-            ),
-          },
-        ]
-      : []),
+    // {
+    //   label: "Action",
+    //   accessor: "cancel",
+    //   render: (row: any) => (
+    //     <CancelReject
+    //       applicantId={row?.applicantId}
+    //       handleCancelRequest={handleCancelRequest}
+    //       status={row?.status}
+    //     />
+    //   ),
+    // },
     ...(isAvailable
       ? [
           {

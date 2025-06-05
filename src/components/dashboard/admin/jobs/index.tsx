@@ -9,6 +9,8 @@ import HomeHealthMedical from "./homeHealthMedical";
 import HomeCareMedical from "./homeCare(Non-Medical)";
 import StaffingNeedsMedical from "./homeStaffingNeeds";
 import { useSearchFilter } from "@/components/useSearchFilter/useSearchFilter";
+import { SelectDropdown } from "./selectDropdown";
+import { getFilteredData } from "@/helper";
 
 const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY;
 
@@ -60,6 +62,15 @@ const tabs = [
   "Staffing Needs",
 ];
 
+const options = [
+  { value: "All", label: "All" },
+  { value: "progress", label: "In Progress" },
+  { value: "completed", label: "Completed" },
+  { value: "cancelled", label: "Cancelled" },
+  { value: "accepted", label: "Accepted but not completed" },
+  { value: "invoice", label: "Pending Invoice" },
+];
+
 export default function DashboardJobsLayout({
   getMedicalData,
   getNonMedicalData,
@@ -71,6 +82,7 @@ export default function DashboardJobsLayout({
   const [expandedRows, setExpandedRows] = useState<{ [key: string]: boolean }>(
     {}
   );
+  const [selectedValue, setSelectedValue] = useState("");
   const [showDetails, setShowDetails] = useState<TableData | null>(null);
   const activeTabData =
     activeTab === tabs[0]
@@ -79,9 +91,8 @@ export default function DashboardJobsLayout({
       ? getNonMedicalData
       : getStaffData;
 
-  let data = activeTabData;
-  const { searchQuery, setSearchQuery, filteredData } =
-    useSearchFilter(activeTabData);
+  let data = getFilteredData(activeTabData, selectedValue);
+  const { searchQuery, setSearchQuery, filteredData } = useSearchFilter(data);
 
   data = filteredData;
 
@@ -129,18 +140,47 @@ export default function DashboardJobsLayout({
     );
   };
 
+  const tabOptions = [
+    { value: "includes DME", label: tabs[0] },
+    { value: "Non-Medical", label: tabs[1] },
+    { value: "Staffing Needs", label: tabs[2] },
+  ];
+
+  const handleSelectChange = (event: any) => {
+    setCurrentPage(1);
+    const tab = tabOptions.find(
+      (option) => option.value === event.target.value
+    );
+    setSelectedValue(event.target.value);
+    if (tab) {
+      setActiveTab(tab.label);
+      setCurrentPage(1);
+    }
+  };
+
+  const handleCancelRequest = () => {
+    alert("cancel request");
+  };
+
   return (
     <div className="m-0 md:p-6">
       <div className="grid  p-6 bg-white font-medium text-lg rounded-t-3xl text-center md:text-left">
         Jobs Details
         <hr className="block mt-2 md:hidden" />
-        <input
-          type="text"
-          placeholder="Search Client Name"
-          value={searchQuery}
-          onChange={(e) => handleSearchChange(e.target.value)}
-          className={`w-full p-2 text-gray-700 bg-white rounded-md  max-w-[310px] text-[15px] border mt-[13px] border-solid border-gray-700 xl:max-w-full`}
-        />
+        <div className=" flex gap-3 xl:block items-center mt-4">
+          <input
+            type="text"
+            placeholder="Search Client Name"
+            value={searchQuery}
+            onChange={(e) => handleSearchChange(e.target.value)}
+            className={`w-full p-2 text-gray-700 bg-white rounded-md  max-w-[310px] text-[15px] border  border-solid border-gray-700 xl:max-w-full`}
+          />
+          <SelectDropdown
+            options={options || []}
+            selectedValue={selectedValue || ""}
+            handleSelectChange={handleSelectChange || (() => {})}
+          />
+        </div>
         <TableHeader
           tabs={tabs}
           activeTab={activeTab}
@@ -161,6 +201,7 @@ export default function DashboardJobsLayout({
                 setCurrentPage={setCurrentPage}
                 showDetails={showDetails}
                 setShowDetails={setShowDetails}
+                handleCancelRequest={handleCancelRequest}
                 {...(activeTab === "Staffing Needs" && {
                   renderAdditionalInfo,
                 })}
