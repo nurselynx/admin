@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { getCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 import HealthcareResponsiveTableCard from "../tableResponsive";
 import { decryptData } from "@/helper/dataEncrypt";
 import TableHeader from "./tableheader";
@@ -11,6 +13,9 @@ import StaffingNeedsMedical from "./homeStaffingNeeds";
 import { useSearchFilter } from "@/components/useSearchFilter/useSearchFilter";
 import { SelectDropdown } from "./selectDropdown";
 import { getFilteredData } from "@/helper";
+import { JOB_CANCEL } from "@/constants/api";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY;
 
@@ -77,11 +82,13 @@ export default function DashboardJobsLayout({
   getStaffData,
   link,
 }: any) {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRows, setExpandedRows] = useState<{ [key: string]: boolean }>(
     {}
   );
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedValue, setSelectedValue] = useState("");
   const [showDetails, setShowDetails] = useState<TableData | null>(null);
   const activeTabData =
@@ -157,78 +164,114 @@ export default function DashboardJobsLayout({
       setCurrentPage(1);
     }
   };
+  const handleCancelRequest = async (applicantId: number) => {
+    setIsLoading(true);
+    try {
+      const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}${JOB_CANCEL}/${applicantId}`;
 
-  const handleCancelRequest = () => {
-    alert("cancel request");
+      const response = await axios.post(
+        url,
+        { status: 4 },
+        {
+          headers: {
+            Authorization: `${getCookie("authToken")}`,
+          },
+        }
+      );
+
+      if (response?.status === 200) {
+        router.refresh();
+        toast.success("The job has been successfully cancelled.");
+        setIsLoading(false);
+      }
+    } catch (error: any) {
+      setIsLoading(false);
+      toast.error(
+        error?.response?.data?.message ||
+          error.message ||
+          "Something went wrong. Please try again."
+      );
+    }
   };
-
   return (
-    <div className="m-0 md:p-6">
-      <div className="grid  p-6 bg-white font-medium text-lg rounded-t-3xl text-center md:text-left">
-        Jobs Details
-        <hr className="block mt-2 md:hidden" />
-        <div className=" flex gap-3 xl:block items-center mt-4">
-          <input
-            type="text"
-            placeholder="Search Client Name"
-            value={searchQuery}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            className={`w-full p-2 text-gray-700 bg-white rounded-md  max-w-[310px] text-[15px] border  border-solid border-gray-700 xl:max-w-full`}
-          />
-          <SelectDropdown
-            options={options || []}
-            selectedValue={selectedValue || ""}
-            handleSelectChange={handleSelectChange || (() => {})}
+    <>
+      {isLoading ? (
+        <div className="w-full h-full fixed z-[999] left-0 top-0 bg-[#01010194]">
+          <p className="flex items-center justify-center h-full text-white">
+            Please wait...
+          </p>
+        </div>
+      ) : (
+        ""
+      )}
+
+      <div className="m-0 md:p-6">
+        <div className="grid  p-6 bg-white font-medium text-lg rounded-t-3xl text-center md:text-left">
+          Jobs Details
+          <hr className="block mt-2 md:hidden" />
+          <div className=" flex gap-3 xl:block items-center mt-4">
+            <input
+              type="text"
+              placeholder="Search Client Name"
+              value={searchQuery}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              className={`w-full p-2 text-gray-700 bg-white rounded-md  max-w-[310px] text-[15px] border  border-solid border-gray-700 xl:max-w-full`}
+            />
+            <SelectDropdown
+              options={options || []}
+              selectedValue={selectedValue || ""}
+              handleSelectChange={handleSelectChange || (() => {})}
+            />
+          </div>
+          <TableHeader
+            tabs={tabs}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            link={link}
+            setCurrentPage={setCurrentPage}
+            setSearchQuery={setSearchQuery}
           />
         </div>
-        <TableHeader
-          tabs={tabs}
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-          link={link}
-          setCurrentPage={setCurrentPage}
-          setSearchQuery={setSearchQuery}
-        />
+        <div className=" bg-white">
+          {data?.length > 0 ? (
+            <>
+              {ActiveTabComponent && (
+                <ActiveTabComponent
+                  data={data}
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  setCurrentPage={setCurrentPage}
+                  showDetails={showDetails}
+                  setShowDetails={setShowDetails}
+                  handleCancelRequest={handleCancelRequest}
+                  {...(activeTab === "Staffing Needs" && {
+                    renderAdditionalInfo,
+                  })}
+                />
+              )}
+              {data?.map((rowData: TableData, index: number) => (
+                <HealthcareResponsiveTableCard
+                  key={index}
+                  patientFacilityName={decryptData(rowData?.name, secretKey)}
+                  location={decryptData(rowData?.location, secretKey)}
+                  date={rowData?.startDate}
+                  userId={rowData?.id}
+                  schedule={
+                    rowData?.schedule === "00:00-24:00"
+                      ? "24 Hours"
+                      : rowData?.schedule
+                  }
+                  viewData={rowData}
+                  rowIndex={index}
+                  setShowDetails={setShowDetails}
+                />
+              ))}
+            </>
+          ) : (
+            <DataEmtpy />
+          )}
+        </div>
       </div>
-      <div className=" bg-white">
-        {data?.length > 0 ? (
-          <>
-            {ActiveTabComponent && (
-              <ActiveTabComponent
-                data={data}
-                currentPage={currentPage}
-                totalPages={totalPages}
-                setCurrentPage={setCurrentPage}
-                showDetails={showDetails}
-                setShowDetails={setShowDetails}
-                handleCancelRequest={handleCancelRequest}
-                {...(activeTab === "Staffing Needs" && {
-                  renderAdditionalInfo,
-                })}
-              />
-            )}
-            {data?.map((rowData: TableData, index: number) => (
-              <HealthcareResponsiveTableCard
-                key={index}
-                patientFacilityName={decryptData(rowData?.name, secretKey)}
-                location={decryptData(rowData?.location, secretKey)}
-                date={rowData?.startDate}
-                userId={rowData?.id}
-                schedule={
-                  rowData?.schedule === "00:00-24:00"
-                    ? "24 Hours"
-                    : rowData?.schedule
-                }
-                viewData={rowData}
-                rowIndex={index}
-                setShowDetails={setShowDetails}
-              />
-            ))}
-          </>
-        ) : (
-          <DataEmtpy />
-        )}
-      </div>
-    </div>
+    </>
   );
 }
