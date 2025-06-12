@@ -22,7 +22,7 @@ const getStatusIcon = (status: Notification["status"]) => {
     accepted: "/assets/image/accepted.png",
     payment: "/assets/image/payment.png",
     cancelled: "/assets/image/cancelled.png",
-    shiftreminder: "/assets/image/reminder.png",
+    shiftreminder: "/assets/image/accepted.png",
     jobopportunity: "/assets/image/accepted.png",
   };
   return icons[status?.toLowerCase()?.trim()] || "/assets/image/accepted.png";
@@ -59,7 +59,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({
                     {status !== "admin" && (
                       <Link
                         href={
-                          type === "newJobAdded"
+                          type === "newJobAdded" || type === "shiftReminder"
                             ? `/jobs?jobId=${refId}`
                             : type === "facility"
                             ? `/facility?facility=${refId}`
