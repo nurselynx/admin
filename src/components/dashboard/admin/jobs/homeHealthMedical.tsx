@@ -67,17 +67,17 @@ export default function HomeHealthMedical({
         ]
       : []),
     // Conditionally add the "Action" column only if isRequests is true
-    // {
-    //   label: "Action",
-    //   accessor: "cancel",
-    //   render: (row: any) => (
-    //     <CancelReject
-    //       applicantId={row?.applicantId}
-    //       handleCancelRequest={handleCancelRequest}
-    //       status={row?.status}
-    //     />
-    //   ),
-    // },
+    {
+      label: "Action",
+      accessor: "cancel",
+      render: (row: any) => (
+        <CancelReject
+          applicantId={row?.id}
+          handleCancelRequest={handleCancelRequest}
+          status={row?.status}
+        />
+      ),
+    },
 
     ...(isAvailable
       ? [

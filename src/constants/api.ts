@@ -16,4 +16,5 @@ export const GET_NOTIFICATION = "/notification";
 // jobs
 export const GET_MEDICAL_JOBS = "/admin/get-medical-jobs";
 export const GET_NON_MEDICAL_JOB = "/admin/get-non-medical-jobs";
-export const GET_STAFFING_JOB = "//admin/get-staff-request-jobs";
+export const GET_STAFFING_JOB = "/admin/get-staff-request-jobs";
+export const JOB_CANCEL = "/admin/cancel-job";
