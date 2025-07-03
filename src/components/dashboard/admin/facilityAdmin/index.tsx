@@ -39,6 +39,9 @@ interface TableData {
   address: string;
   licenseExpiryDate: string;
   preferredRate?: string;
+  facilityCity?: string;
+  facilityState?: string;
+  facilityPincode?: string;
 }
 
 type Column = {
@@ -160,7 +163,14 @@ export default function DashboardFacilityLayout({ facilityData }: any) {
     {
       label: "Address",
       accessor: "address",
-      render: (row) => decryptData(row?.facilityAddress, secretKey),
+      render: (row) => {
+        const address = decryptData(row?.facilityAddress ?? "", secretKey);
+        const city = decryptData(row?.facilityCity ?? "", secretKey);
+        const state = decryptData(row?.facilityState ?? "", secretKey);
+        const pincode = row?.facilityPincode ?? "";
+
+        return [address, city, state, pincode].filter(Boolean).join(", ");
+      },
     },
     {
       label: "Primary Number",
