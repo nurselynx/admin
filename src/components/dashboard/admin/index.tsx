@@ -153,8 +153,7 @@ export default function DashboardHealthLayout({ healthData }: any) {
       accessor: "preferredRate",
       render: (row) =>
         row?.preferredRate
-          ? decryptData(row?.preferredRate ?? "", secretKey) +
-            decryptData(row?.preferredRate ?? "", secretKey)
+          ? decryptData(row?.preferredRate ?? "", secretKey)
           : "N/A",
     },
     {
