@@ -41,6 +41,9 @@ interface TableData {
   certificateUrl: any;
   certificateNumber: string;
   preferredRate?: string;
+  state?: string;
+  city?: string;
+  pincode?: string;
 }
 
 type Column = {
@@ -67,8 +70,6 @@ export default function DashboardHealthLayout({ healthData }: any) {
     useSearchFilter(healthData);
 
   data = filteredData;
-
-  console.log(healthData, "healthData");
 
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
@@ -152,13 +153,21 @@ export default function DashboardHealthLayout({ healthData }: any) {
       accessor: "preferredRate",
       render: (row) =>
         row?.preferredRate
-          ? decryptData(row?.preferredRate ?? "", secretKey)
+          ? decryptData(row?.preferredRate ?? "", secretKey) +
+            decryptData(row?.preferredRate ?? "", secretKey)
           : "N/A",
     },
     {
       label: "Address",
       accessor: "address",
-      render: (row) => decryptData(row?.address, secretKey),
+      render: (row) => {
+        const address = decryptData(row?.address ?? "", secretKey);
+        const city = decryptData(row?.city ?? "", secretKey);
+        const state = decryptData(row?.state ?? "", secretKey);
+        const pincode = row?.pincode ?? "";
+
+        return [address, city, state, pincode].filter(Boolean).join(", ");
+      },
     },
     {
       label: "Language",
