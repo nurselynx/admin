@@ -44,6 +44,7 @@ interface TableData {
   state?: string;
   city?: string;
   pincode?: string;
+  expertise?: any;
 }
 
 type Column = {
@@ -102,7 +103,7 @@ export default function DashboardHealthLayout({ healthData }: any) {
       toast.error(error?.message || "Something went wrong. Please try again.");
     }
   };
-
+  console.log(data, "datadatadatadatadatadatadata");
   const columns: Column[] = [
     {
       label: "User Name",
@@ -144,9 +145,14 @@ export default function DashboardHealthLayout({ healthData }: any) {
       accessor: "userEmail",
     },
     {
-      label: "Title",
+      label: "Medical Title",
       accessor: "title",
       render: (row) => decryptData(row?.title, secretKey),
+    },
+    {
+      label: "Area of Expertise",
+      accessor: "expertise",
+      render: (row) => row?.expertise?.join(", "),
     },
     {
       label: "Desired Rate",
