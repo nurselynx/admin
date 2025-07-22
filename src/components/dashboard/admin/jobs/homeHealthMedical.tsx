@@ -60,7 +60,7 @@ export default function HomeHealthMedical({
     ...(isSuggested
       ? [
           {
-            label: "Suggested Professionals",
+            label: "Suggested Matches",
             accessor: "suggestedProfessionals",
             render: (row: any) => renderSuggestedProfessionals?.(row) ?? null,
           },
@@ -72,7 +72,7 @@ export default function HomeHealthMedical({
       accessor: "cancel",
       render: (row: any) => (
         <CancelReject
-          applicantId={row?.id}
+          applicantId={row}
           handleCancelRequest={handleCancelRequest}
           status={row?.status}
         />

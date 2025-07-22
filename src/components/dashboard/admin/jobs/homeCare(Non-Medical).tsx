@@ -76,7 +76,7 @@ export default function HomeCareMedical({
     ...(isSuggested
       ? [
           {
-            label: "Suggested Professionals",
+            label: "Suggested Matches",
             accessor: "suggestedProfessionals",
             render: (row: any) => renderSuggestedProfessionals?.(row) ?? null,
           },
@@ -88,7 +88,7 @@ export default function HomeCareMedical({
       accessor: "cancel",
       render: (row: any) => (
         <CancelReject
-          applicantId={row?.id}
+          applicantId={row}
           handleCancelRequest={handleCancelRequest}
           status={row?.status}
         />

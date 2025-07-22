@@ -19,13 +19,14 @@ const ResponsiveTableCard: React.FC<ResponsiveTableCardProps> = ({
   isPhoneNumber,
   speciality,
   handleCancelRequest,
-  applicantId
+  applicantId,
 }) => {
   return (
     <div className="block md:hidden w-full">
       <div
         key={rowIndex}
-        className="p-4 mb-4 w-full flex flex-col gap-y-2 relative">
+        className="p-4 mb-4 w-full flex flex-col gap-y-2 relative"
+      >
         <h1 className="text-base text-lynx-blue-400 font-semibold">
           {patientFacilityName}
         </h1>
@@ -77,17 +78,22 @@ const ResponsiveTableCard: React.FC<ResponsiveTableCardProps> = ({
         <hr />
         <button
           type="button"
-          className={`w-full ${isRequests ? 'text-lynx-orange-700 border border-lynx-orange-700 bg-transparent ' : 'bg-lynx-blue-100 text-white'}   py-2 px-4 rounded-md mt-4`}
+          className={`w-full ${
+            isRequests
+              ? "text-lynx-orange-700 border border-lynx-orange-700 bg-transparent "
+              : "bg-lynx-blue-100 text-white"
+          }   py-2 px-4 rounded-md mt-4`}
           onClick={() => {
-            if(isRequests){
-            handleCancelRequest(applicantId)
-            }else{
-            setIsSuggestedProfessionals(true);
-            fetchCandidateName(isJobType ? viewData?.healthId : viewData?.id);
-            // jobIDNumber(viewData?.id);
-            setJobIDNumber && setJobIDNumber(viewData?.id);
+            if (isRequests) {
+              handleCancelRequest(viewData);
+            } else {
+              setIsSuggestedProfessionals(true);
+              fetchCandidateName(isJobType ? viewData?.healthId : viewData?.id);
+              // jobIDNumber(viewData?.id);
+              setJobIDNumber && setJobIDNumber(viewData?.id);
             }
-          }}>
+          }}
+        >
           {isRequests ? "Cancel Request" : "View Professionals"}
         </button>
       </div>

@@ -77,7 +77,7 @@ const DetalsHealthcareAdmin: React.FC<DetailsHealthcareProps> = ({
         <hr />
         {renderDetail("Email", email)}
         <hr />
-        {renderDetail("Title", title)}
+        {renderDetail("Medical Title", title)}
         <hr />
         {renderDetail("Language", language)}
         <hr />

@@ -151,7 +151,7 @@ export default function DashboardFacilityLayout({ facilityData }: any) {
           : "N/A",
     },
     {
-      label: "Type",
+      label: "Organization Type",
       accessor: "facilityType",
       render: (row) => decryptData(row?.facilityType, secretKey),
     },

@@ -164,10 +164,10 @@ export default function DashboardJobsLayout({
       setCurrentPage(1);
     }
   };
-  const handleCancelRequest = async (applicantId: number) => {
+  const handleCancelRequest = async (data: any) => {
     setIsLoading(true);
     try {
-      const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}${JOB_CANCEL}/${applicantId}`;
+      const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}${JOB_CANCEL}/${data?.id}/${data?.jobType}`;
 
       const response = await axios.post(
         url,
