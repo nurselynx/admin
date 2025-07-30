@@ -22,14 +22,14 @@ const STATUS_MAP: {
   },
   1: {
     text: "Accepted but not completed",
-    bgColor: "bg-[#FFF9F2]",
-    textColor: "text-[#FF7700]",
+    bgColor: "bg-[#E8F5FF]",
+    textColor: "text-[#008CFF]",
     width: "w-[210px]",
   },
   2: {
-    text: "Accepted",
-    bgColor: "bg-[#FFEDED]",
-    textColor: "text-[#FF4D4D]",
+    text: "Rejected",
+    bgColor: "bg-[#ffebeb]",
+    textColor: "text-[#e30707]",
     width: "w-[96px]",
   },
   3: {
