@@ -147,7 +147,7 @@ export default function DashboardHealthLayout({ healthData }: any) {
     {
       label: "Medical Title",
       accessor: "title",
-      render: (row) => decryptData(row?.title, secretKey),
+      render: (row) => decryptData(row?.title, secretKey)?.toUpperCase(),
     },
     {
       label: "Area of Expertise",
@@ -167,11 +167,8 @@ export default function DashboardHealthLayout({ healthData }: any) {
       accessor: "address",
       render: (row) => {
         const address = decryptData(row?.address ?? "", secretKey);
-        const city = decryptData(row?.city ?? "", secretKey);
-        const state = decryptData(row?.state ?? "", secretKey);
-        const pincode = row?.pincode ?? "";
 
-        return [address, city, state, pincode].filter(Boolean).join(", ");
+        return [address]?.filter(Boolean).join(", ");
       },
     },
     {
