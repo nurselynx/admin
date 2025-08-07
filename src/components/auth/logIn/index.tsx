@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import axios from "axios";
 import { setCookie } from "cookies-next";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import InputField from '../inputField/inputField';  // Import the InputField component
+import { useForm, SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import InputField from "../inputField/inputField"; // Import the InputField component
 import { USER_LOGIN } from "@/constants/api";
 import useFcmToken from "@/components/firebase/useFcmToken";
 // Interface for props
@@ -26,12 +26,12 @@ interface FormInputs {
 const schema = yup.object().shape({
   email: yup
     .string()
-    .email('Invalid email address')
-    .required('Email is required'),
+    .email("Invalid email address")
+    .required("Email is required"),
   password: yup
     .string()
-    .min(8, 'Password must be at least 8 characters')
-    .required('Password is required'),
+    .min(8, "Password must be at least 8 characters")
+    .required("Password is required"),
 });
 
 const LoginForm: React.FC<LoginFormProps> = () => {
@@ -40,7 +40,10 @@ const LoginForm: React.FC<LoginFormProps> = () => {
   const inThirtyDays = new Date();
   inThirtyDays.setDate(inThirtyDays?.getDate() + 30);
   const router = useRouter();
-  const [showFields, setShowFields] = useState<{ email: boolean; password: boolean }>({
+  const [showFields, setShowFields] = useState<{
+    email: boolean;
+    password: boolean;
+  }>({
     email: true,
     password: true,
   });
@@ -54,7 +57,7 @@ const LoginForm: React.FC<LoginFormProps> = () => {
   });
 
   // Toggle field visibility
-  const toggleFieldVisibility = (field: 'email' | 'password') => {
+  const toggleFieldVisibility = (field: "email" | "password") => {
     setShowFields((prev) => ({
       ...prev,
       [field]: !prev[field],
@@ -64,11 +67,16 @@ const LoginForm: React.FC<LoginFormProps> = () => {
     const formattedData = {
       ...data,
       fcmToken: token,
-      role: 'admin',
+      role: "admin",
     };
-    setIsLoader(true)
+    setIsLoader(true);
     try {
       const res = await axios.post(`${apiBaseURL}${USER_LOGIN}`, formattedData);
+      if (res?.data?.users?.role !== "admin") {
+        toast.error("Access denied. You are not an admin.");
+        setIsLoader(false);
+        return;
+      }
       if (res?.data?.users?.role) {
         setCookie("refreshToken", res?.data?.refreshToken, {
           expires: inThirtyDays,
@@ -76,19 +84,17 @@ const LoginForm: React.FC<LoginFormProps> = () => {
         setCookie("authToken", res?.data?.token, { expires: inThirtyDays });
         setCookie("dataUser", res?.data.users, { expires: inThirtyDays });
         toast.success("Login successful! Welcome back!");
-        router.push('/dashboard');
+        router.push("/dashboard");
         router.refresh();
-        setIsLoader(false)
+        setIsLoader(false);
       } else {
         toast.error("Something went wrong. Please try again.");
-        setIsLoader(false)
+        setIsLoader(false);
       }
     } catch (error: any) {
-       setIsLoader(false)
+      setIsLoader(false);
       if (error.response) {
-        toast.error(
-          `${error?.response?.data?.error || "Login failed"}`
-        );
+        toast.error(`${error?.response?.data?.error || "Login failed"}`);
       } else if (error.request) {
         toast.error("No response from server. Please try again later.");
       } else {
@@ -102,26 +108,26 @@ const LoginForm: React.FC<LoginFormProps> = () => {
       <InputField
         label="Email ID"
         id="email"
-        type={showFields.email ? 'email' : 'password'}
+        type={showFields.email ? "email" : "password"}
         placeholder="Enter Email ID"
         register={register}
         errors={errors}
         validationKey="email"
         showInput={showFields.email}
-        toggleVisibility={() => toggleFieldVisibility('email')}
+        toggleVisibility={() => toggleFieldVisibility("email")}
         isEyeShow={true}
       />
 
       <InputField
         label="Password"
         id="password"
-        type={showFields.password ? 'text' : 'password'}
+        type={showFields.password ? "text" : "password"}
         placeholder="Enter Password"
         register={register}
         errors={errors}
         validationKey="password"
         showInput={showFields.password}
-        toggleVisibility={() => toggleFieldVisibility('password')}
+        toggleVisibility={() => toggleFieldVisibility("password")}
         isEyeShow={true}
       />
 
