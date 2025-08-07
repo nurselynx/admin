@@ -165,11 +165,8 @@ export default function DashboardFacilityLayout({ facilityData }: any) {
       accessor: "address",
       render: (row) => {
         const address = decryptData(row?.facilityAddress ?? "", secretKey);
-        const city = decryptData(row?.facilityCity ?? "", secretKey);
-        const state = decryptData(row?.facilityState ?? "", secretKey);
-        const pincode = row?.facilityPincode ?? "";
 
-        return [address, city, state, pincode].filter(Boolean).join(", ");
+        return [address]?.filter(Boolean).join(", ");
       },
     },
     {
