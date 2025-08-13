@@ -91,6 +91,31 @@ const DetailsFacility: React.FC<DetailsFacilityProps> = ({
           </h1>
         </div>
         <div className=" px-6 pb-3 w-full">
+          {showDetails?.acceptedBy?.title && (
+            <>
+              <h2 className=" font-semibold">Assigned Professional </h2>
+              {renderDetail(
+                "Title",
+                decryptData(showDetails?.acceptedBy?.title ?? "", secretKey)
+              )}
+              <hr />
+              {renderDetail("Email", showDetails?.acceptedBy?.email ?? "")}
+              <hr />
+
+              {renderDetail("Expertise", showDetails?.acceptedBy?.expertise)}
+              <hr />
+
+              {renderDetail(
+                "Phone Number",
+                decryptData(
+                  showDetails?.acceptedBy?.phoneNumber ?? "",
+                  secretKey
+                )
+              )}
+              <hr />
+            </>
+          )}
+
           {isStaffingNeeds ? (
             <>
               {renderBoldField(
