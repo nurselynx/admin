@@ -110,6 +110,24 @@ export default function HomeCareMedical({
         ]
       : []),
     {
+      label: "Job Creator",
+      accessor: "requestedBy",
+      render: (row) => decryptData(row?.requestedBy ?? "", secretKey),
+    },
+    {
+      label: "Assigned Professional",
+      accessor: "status",
+      render: (row: any) => (
+        <button
+          type="button"
+          onClick={() => (row?.acceptedBy ? setShowDetails(row) : null)}
+          className=" text-lynx-blue-100"
+        >
+          {row?.acceptedBy ? "User Details" : "N/A"}
+        </button>
+      ),
+    },
+    {
       label: "Status",
       accessor: "status",
       render: (row: any) => <StatusBadge status={row?.status ?? 0} />,

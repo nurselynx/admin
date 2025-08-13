@@ -40,6 +40,7 @@ export interface TableDataType {
   languagePreference?: any;
   experience?: string
   privatePay?: string;
+  requestedBy?: string;
 }
 
 export type Column = {
@@ -52,6 +53,7 @@ export type Column = {
 export interface DetailsFacilityProps {
   setShowDetails: (value: null) => void; // Function to set showDetails to null
   showDetails: {
+    acceptedBy?: any
     other?: string;
     otherInfo?: string;
     insuranceProvider?: string;
