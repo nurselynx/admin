@@ -153,6 +153,11 @@ export default function StaffingNeedsMedical({
         ]
       : []),
     {
+      label: "Status",
+      accessor: "status",
+      render: (row: any) => <StatusBadge status={row?.status ?? 0} />,
+    },
+    {
       label: "Job Creator",
       accessor: "requestedBy",
       render: (row) => decryptData(row?.requestedBy ?? "", secretKey),
@@ -169,12 +174,6 @@ export default function StaffingNeedsMedical({
           {row?.acceptedBy ? "User Details" : "N/A"}
         </button>
       ),
-    },
-
-    {
-      label: "Status",
-      accessor: "status",
-      render: (row: any) => <StatusBadge status={row?.status ?? 0} />,
     },
     {
       label: "Full Details",
