@@ -95,14 +95,28 @@ const DetailsFacility: React.FC<DetailsFacilityProps> = ({
             <>
               <h2 className=" font-semibold">Assigned Professional </h2>
               {renderDetail(
+                "Name",
+                decryptData(showDetails?.acceptedBy?.name ?? "", secretKey)
+              )}
+              <hr />
+              {renderDetail(
                 "Title",
-                decryptData(showDetails?.acceptedBy?.title ?? "", secretKey)
+                decryptData(
+                  showDetails?.acceptedBy?.title ?? "",
+                  secretKey
+                )?.toUpperCase()
               )}
               <hr />
               {renderDetail("Email", showDetails?.acceptedBy?.email ?? "")}
               <hr />
 
-              {renderDetail("Expertise", showDetails?.acceptedBy?.expertise)}
+              {renderDetail(
+                "Expertise",
+                decryptData(
+                  showDetails?.acceptedBy?.expertise ?? "",
+                  secretKey
+                ) || showDetails?.acceptedBy?.expertise
+              )}
               <hr />
 
               {renderDetail(
