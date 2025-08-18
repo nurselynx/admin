@@ -72,11 +72,6 @@ const LoginForm: React.FC<LoginFormProps> = () => {
     setIsLoader(true);
     try {
       const res = await axios.post(`${apiBaseURL}${USER_LOGIN}`, formattedData);
-      if (res?.data?.users?.role !== "admin") {
-        toast.error("Access denied. You are not an admin.");
-        setIsLoader(false);
-        return;
-      }
       if (res?.data?.users?.role) {
         setCookie("refreshToken", res?.data?.refreshToken, {
           expires: inThirtyDays,

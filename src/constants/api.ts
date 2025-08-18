@@ -1,4 +1,4 @@
-export const USER_LOGIN = "/users/login";
+export const USER_LOGIN = "/admin/login";
 export const USER_FORGET = "/users/forget-password";
 export const REFRESH_TOKEN = "/users/refresh-token";
 export const RESET_PASSWORD = "/users/reset-password";
