@@ -22,7 +22,7 @@ export interface TableDataType {
   frequencyRequired?: string;
   applicantId?: number;
   status?: number;
-  insuranceProvider?: string
+  insuranceProvider?: string;
   documentUrl?: {
     signed_url?: string;
   };
@@ -38,7 +38,7 @@ export interface TableDataType {
   genderPreference?: string;
   timePreference?: string;
   languagePreference?: any;
-  experience?: string
+  experience?: string;
   privatePay?: string;
   requestedBy?: string;
 }
@@ -53,13 +53,13 @@ export type Column = {
 export interface DetailsFacilityProps {
   setShowDetails: (value: null) => void; // Function to set showDetails to null
   showDetails: {
-    acceptedBy?: any
+    acceptedBy?: any;
     other?: string;
     otherInfo?: string;
     insuranceProvider?: string;
     alliedHealth?: string;
     id?: string;
-    healthId?: string
+    healthId?: string;
     clientName: string;
     clientAddress: string;
     phoneNumber: string;
@@ -88,6 +88,12 @@ export interface DetailsFacilityProps {
     timePreference?: string;
     languagePreference?: string;
     applicantId?: number;
+    requestedBy?: string;
+    requestedByAddress?: string;
+    requestedByPhoneNumber?: string;
+    requestedByType?: string;
+    userEmail?: string;
+    commissionAmount?: string;
     documentUrl?: {
       signed_url?: string;
     };
@@ -98,6 +104,7 @@ export interface DetailsFacilityProps {
   isHomeHealth?: boolean;
   isRequests?: boolean;
   handleCancelRequest?: any;
+  showProfessionalDetails?: any;
 }
 
 export type EventData = {
@@ -140,7 +147,7 @@ export interface ResponsiveTableCardProps {
   speciality?: string;
   isRequests?: boolean;
   handleCancelRequest?: any;
-  applicantId?: number
+  applicantId?: number;
 }
 
 interface Option {

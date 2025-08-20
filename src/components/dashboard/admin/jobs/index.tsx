@@ -91,6 +91,10 @@ export default function DashboardJobsLayout({
   const [isLoading, setIsLoading] = useState(false);
   const [selectedValue, setSelectedValue] = useState("");
   const [showDetails, setShowDetails] = useState<TableData | null>(null);
+  const [showJobCreatorDetails, setShowJobCreatorDetails] =
+    useState<TableData | null>(null);
+  const [showProfessionalDetails, setShowProfessionalDetails] =
+    useState<TableData | null>(null);
   const activeTabData =
     activeTab === tabs[0]
       ? getMedicalData
@@ -215,7 +219,7 @@ export default function DashboardJobsLayout({
               placeholder="Search Client Name"
               value={searchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
-              className={`w-full p-2 text-gray-700 bg-white rounded-md  max-w-[310px] text-[15px] border  border-solid border-gray-700 xl:max-w-full`}
+              className={`w-full p-2 xl:mb-3 text-gray-700 bg-white rounded-md  max-w-[310px] text-[15px] border  border-solid border-gray-700 xl:max-w-full`}
             />
             <SelectDropdown
               options={options || []}
@@ -242,7 +246,11 @@ export default function DashboardJobsLayout({
                   totalPages={totalPages}
                   setCurrentPage={setCurrentPage}
                   showDetails={showDetails}
+                  showProfessionalDetails={showProfessionalDetails}
+                  showJobCreatorDetails={showJobCreatorDetails}
                   setShowDetails={setShowDetails}
+                  setShowProfessionalDetails={setShowProfessionalDetails}
+                  setShowJobCreatorDetails={setShowJobCreatorDetails}
                   handleCancelRequest={handleCancelRequest}
                   {...(activeTab === "Staffing Needs" && {
                     renderAdditionalInfo,
@@ -264,6 +272,8 @@ export default function DashboardJobsLayout({
                   viewData={rowData}
                   rowIndex={index}
                   setShowDetails={setShowDetails}
+                  setShowProfessionalDetails={setShowProfessionalDetails}
+                  setShowJobCreatorDetails={setShowJobCreatorDetails}
                 />
               ))}
             </>

@@ -103,7 +103,6 @@ export default function DashboardHealthLayout({ healthData }: any) {
       toast.error(error?.message || "Something went wrong. Please try again.");
     }
   };
-  console.log(data, "datadatadatadatadatadatadata");
   const columns: Column[] = [
     {
       label: "User Name",

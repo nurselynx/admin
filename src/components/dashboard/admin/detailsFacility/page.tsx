@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { format } from "date-fns";
 import { decryptData } from "@/helper/dataEncrypt";
@@ -11,8 +11,9 @@ const DetailsFacility: React.FC<DetailsFacilityProps> = ({
   showDetails,
   isStaffingNeeds = false,
   isHomeCare = false,
-  handleCancelRequest,
 }) => {
+  const [isModalDetails, setIsModalDetails] = useState(false);
+
   const renderDetail = (
     label: string,
     value?: string | number,
@@ -20,7 +21,7 @@ const DetailsFacility: React.FC<DetailsFacilityProps> = ({
   ) => (
     <div className="mb-4 mt-6">
       <h2 className="text-sm mb-2 font-normal text-lynx-grey-700">{label}</h2>
-      <p className="text-lynx-blue-400 text-base font-normal">
+      <p className="text-lynx-blue-400 text-base font-normal break-words">
         {value ? `${value}${suffix}` : "N/A"}
       </p>
     </div>
@@ -70,7 +71,7 @@ const DetailsFacility: React.FC<DetailsFacilityProps> = ({
   );
 
   return (
-    <div className="absolute top-0 w-full h-full md:absolute md:left-0 md:top-0 md:z-50">
+    <div className="xl:fixed xl:overflow-x-auto xl:z-50 xl:top-0 w-full xl:h-full  md:absolute md:left-0 md:top-0 md:z-50">
       <div className="bg-white min-h-screen ">
         <div className="flex items-start mb-9 sticky top-0 bg-white p-6 shadow-[0px_2px_6px_0px_#e8e4e4]">
           <button
@@ -90,13 +91,18 @@ const DetailsFacility: React.FC<DetailsFacilityProps> = ({
             Details
           </h1>
         </div>
-        <div className=" px-6 pb-3 w-full">
+
+        <div className=" px-6 pb-3 w-full ">
           {showDetails?.acceptedBy?.title && (
-            <>
+            <div className=" hidden xl:block">
               <h2 className=" font-semibold">Assigned Professional </h2>
               {renderDetail(
                 "Name",
-                decryptData(showDetails?.acceptedBy?.name ?? "", secretKey)
+                decryptData(
+                  showDetails?.acceptedBy?.name ??
+                    showDetails?.acceptedBy?.orgName,
+                  secretKey
+                )
               )}
               <hr />
               {renderDetail(
@@ -127,7 +133,7 @@ const DetailsFacility: React.FC<DetailsFacilityProps> = ({
                 )
               )}
               <hr />
-            </>
+            </div>
           )}
 
           {isStaffingNeeds ? (
@@ -143,7 +149,10 @@ const DetailsFacility: React.FC<DetailsFacilityProps> = ({
 
               {renderDetail(
                 "Speciality and Qualifications",
-                decryptData(showDetails?.speciality ?? "", secretKey)
+                decryptData(
+                  showDetails?.speciality ?? "",
+                  secretKey
+                )?.toUpperCase()
               )}
               <hr />
               {renderDetail(
@@ -191,6 +200,54 @@ const DetailsFacility: React.FC<DetailsFacilityProps> = ({
                 decryptData(showDetails?.clientName ?? "", secretKey)
               )}
               <hr />
+              {renderDetail(
+                "Job Creator",
+                decryptData(showDetails?.requestedBy ?? "", secretKey)
+              )}
+              <button
+                className=" hidden xl:block mb-3 bg-lynx-blue-200 text-white px-3 py-1 rounded text-sm "
+                onClick={() => setIsModalDetails(!isModalDetails)}
+              >
+                {isModalDetails ? "View Less " : "View Full Details"}
+              </button>
+              {showDetails?.requestedBy && isModalDetails && (
+                <div className=" bg-gray-100 p-2 w-full">
+                  {renderDetail(
+                    "Name",
+                    decryptData(showDetails?.requestedBy ?? "", secretKey)
+                  )}
+                  <hr />
+                  {renderDetail(
+                    "Address",
+                    decryptData(
+                      showDetails?.requestedByAddress ?? "",
+                      secretKey
+                    )
+                  )}
+                  <hr />
+                  {renderDetail("Email", showDetails?.userEmail ?? "")}
+                  <hr />
+
+                  {renderDetail(
+                    "Type",
+                    decryptData(
+                      showDetails?.requestedByType ?? "",
+                      secretKey
+                    ) || showDetails?.requestedByType
+                  )}
+                  <hr />
+
+                  {renderDetail(
+                    "Phone Number",
+                    decryptData(
+                      showDetails?.requestedByPhoneNumber ?? "",
+                      secretKey
+                    )
+                  )}
+                  <hr />
+                </div>
+              )}
+              <hr />
               {renderDetail("Client Address", showDetails?.clientAddress)}
               <hr />
               {renderDetail(
@@ -215,7 +272,6 @@ const DetailsFacility: React.FC<DetailsFacilityProps> = ({
                   <hr />
                 </>
               )}
-
               {renderDetail(
                 "Pay Method",
                 decryptData(showDetails?.longTermInsurance ?? "", secretKey) ===
@@ -224,7 +280,6 @@ const DetailsFacility: React.FC<DetailsFacilityProps> = ({
                   : "Private Pay"
               )}
               <hr />
-
               {renderDetail(
                 "Desired Rate",
                 decryptData(showDetails?.privatePay ?? "", secretKey)
@@ -232,7 +287,15 @@ const DetailsFacility: React.FC<DetailsFacilityProps> = ({
                   : "N/A"
               )}
               <hr />
-
+              {renderDetail(
+                "Commission Fees",
+                `${
+                  showDetails?.commissionAmount
+                    ? `$${showDetails?.commissionAmount}`
+                    : "N/A"
+                } `
+              )}
+              <hr />
               {renderDetail(
                 "Insurance Name",
                 decryptData(
@@ -283,13 +346,11 @@ const DetailsFacility: React.FC<DetailsFacilityProps> = ({
                   : showDetails?.schedule
               )}
               <hr />
-
               {renderDetail(
                 "Frequency Required",
                 decryptData(showDetails?.frequencyRequired ?? "", secretKey)
               )}
               <hr />
-
               <hr />
               <h2 className="text-sm  font-normal text-lynx-grey-700 mb-2 mt-6">
                 Status

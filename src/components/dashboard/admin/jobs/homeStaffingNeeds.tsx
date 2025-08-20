@@ -8,6 +8,8 @@ import { StatusBadge } from "./statusBadge";
 import { DataEmtpy } from "./homeCare(Non-Medical)";
 import { acceptIcon } from "../../../../../public/assets/svgIcons/svgIcons";
 import Table from "../../table/responsiveTable";
+import JobCreator from "../jobCreator/page";
+import AssignedProfessional from "../assignedProfessional/page";
 interface HomeHealthMedicalProps {
   data: TableDataType[];
   setIsSuggestedProfessionals?: any;
@@ -27,6 +29,10 @@ interface HomeHealthMedicalProps {
   handleCancelRequest?: any;
   handleActionConfirm?: any;
   isSuggested?: boolean;
+  setShowProfessionalDetails?: any;
+  showProfessionalDetails?: any;
+  showJobCreatorDetails?: any;
+  setShowJobCreatorDetails?: any;
 }
 
 export const CancelReject = ({
@@ -108,6 +114,10 @@ export default function StaffingNeedsMedical({
   handleCancelRequest,
   handleActionConfirm,
   isSuggested = false,
+  setShowProfessionalDetails,
+  showProfessionalDetails,
+  showJobCreatorDetails,
+  setShowJobCreatorDetails,
 }: HomeHealthMedicalProps) {
   const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY ?? "";
   const columns: Column[] = [
@@ -160,7 +170,21 @@ export default function StaffingNeedsMedical({
     {
       label: "Job Creator",
       accessor: "requestedBy",
-      render: (row) => decryptData(row?.requestedBy ?? "", secretKey),
+      render: (row: any) => (
+        <button
+          type="button"
+          onClick={() =>
+            row?.requestedBy ? setShowJobCreatorDetails(row) : null
+          }
+          className={`${
+            row?.requestedBy
+              ? "text-lynx-blue-100"
+              : " text-lynx-blue-400 cursor-not-allowed"
+          }`}
+        >
+          {row?.requestedBy ? "View Job Creator" : "No Job Creator"}
+        </button>
+      ),
     },
     {
       label: "Assigned Professional",
@@ -168,15 +192,21 @@ export default function StaffingNeedsMedical({
       render: (row: any) => (
         <button
           type="button"
-          onClick={() => (row?.acceptedBy ? setShowDetails(row) : null)}
-          className=" text-lynx-blue-100"
+          onClick={() =>
+            row?.acceptedBy ? setShowProfessionalDetails(row) : null
+          }
+          className={`${
+            row?.acceptedBy
+              ? "text-lynx-blue-100"
+              : " text-red-400 cursor-not-allowed"
+          }`}
         >
-          {row?.acceptedBy ? "User Details" : "N/A"}
+          {row?.acceptedBy ? "View Assigned Job Details" : "Job Not Assigned"}
         </button>
       ),
     },
     {
-      label: "Full Details",
+      label: "Job Details",
       accessor: "action",
       render: (row: any) => (
         <button
@@ -184,7 +214,7 @@ export default function StaffingNeedsMedical({
           onClick={() => setShowDetails(row)}
           className=" text-lynx-blue-100"
         >
-          Details
+          View Job Details
         </button>
       ),
     },
@@ -209,14 +239,34 @@ export default function StaffingNeedsMedical({
       ) : (
         <DataEmtpy />
       )}
-
+      {decryptData(showJobCreatorDetails?.requestedBy, secretKey) && (
+        <>
+          <JobCreator
+            setShowDetails={setShowJobCreatorDetails}
+            showDetails={showJobCreatorDetails}
+            setIsSuggestedProfessionals={setIsSuggestedProfessionals}
+          />
+        </>
+      )}
+      {decryptData(showProfessionalDetails?.orgName, secretKey) && (
+        <>
+          <AssignedProfessional
+            setShowDetails={setShowProfessionalDetails}
+            showDetails={showProfessionalDetails}
+            setIsSuggestedProfessionals={setIsSuggestedProfessionals}
+          />
+        </>
+      )}
       {decryptData(showDetails?.orgName, secretKey) ? (
-        <DetailsFacility
-          setShowDetails={setShowDetails}
-          showDetails={showDetails}
-          setIsSuggestedProfessionals={setIsSuggestedProfessionals}
-          isStaffingNeeds={true}
-        />
+        <>
+          <DetailsFacility
+            setShowDetails={setShowDetails}
+            showDetails={showDetails}
+            setIsSuggestedProfessionals={setIsSuggestedProfessionals}
+            isStaffingNeeds={true}
+            showProfessionalDetails={showProfessionalDetails}
+          />
+        </>
       ) : (
         data?.map((item: TableDataType, rowIndex: number) => (
           <ResponsiveTableCard
