@@ -16,7 +16,7 @@ const HealthcareResponsiveTableCard: React.FC<any> = ({
   userId,
 }) => {
   return (
-    <div className="block md:hidden w-full">
+    <div className="hidden md:hidden w-full">
       <div
         key={rowIndex}
         className="p-4 mb-4 w-full flex flex-col gap-y-2 relative"

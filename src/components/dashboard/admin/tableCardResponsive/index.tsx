@@ -41,9 +41,7 @@ const ResponsiveTableCard: React.FC<ResponsiveTableCardProps> = ({
         </div>
         <div className="text-base text-lynx-grey-700 flex items-center mt-1">
           <Image
-            src={`/assets/image/${
-              isPhoneNumber ? "phone-grey.png" : "safety-grey.png"
-            }`}
+            src={`/assets/image/phone.png`}
             alt="phone"
             height={16}
             width={16}
@@ -78,7 +76,7 @@ const ResponsiveTableCard: React.FC<ResponsiveTableCardProps> = ({
         <hr />
         <button
           type="button"
-          className={`w-full ${
+          className={`w-full hidden ${
             isRequests
               ? "text-lynx-orange-700 border border-lynx-orange-700 bg-transparent "
               : "bg-lynx-blue-100 text-white"

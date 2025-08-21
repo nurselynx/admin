@@ -8,6 +8,8 @@ import { StatusBadge } from "./statusBadge";
 import { DataEmtpy } from "./homeCare(Non-Medical)";
 import { AcceptAndCanel, CancelReject } from "./homeStaffingNeeds";
 import Table from "../../table/responsiveTable";
+import AssignedProfessional from "../assignedProfessional/page";
+import JobCreator from "../jobCreator/page";
 
 interface HomeHealthMedicalProps {
   data: TableDataType[];
@@ -28,6 +30,10 @@ interface HomeHealthMedicalProps {
   handleCancelRequest?: any;
   handleActionConfirm?: any;
   isSuggested?: boolean;
+  setShowProfessionalDetails?: any;
+  showProfessionalDetails?: any;
+  showJobCreatorDetails?: any;
+  setShowJobCreatorDetails?: any;
 }
 
 export default function HomeHealthMedical({
@@ -39,6 +45,8 @@ export default function HomeHealthMedical({
   currentPage,
   totalPages,
   setShowDetails,
+  setShowProfessionalDetails,
+  showProfessionalDetails,
   setCurrentPage,
   showDetails,
   setJobIDNumber,
@@ -49,6 +57,8 @@ export default function HomeHealthMedical({
   handleCancelRequest,
   handleActionConfirm,
   isSuggested,
+  showJobCreatorDetails,
+  setShowJobCreatorDetails,
 }: HomeHealthMedicalProps) {
   const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY ?? "";
   const columns: Column[] = [
@@ -95,9 +105,29 @@ export default function HomeHealthMedical({
         ]
       : []),
     {
+      label: "Status",
+      accessor: "status",
+      render: (row: any) => <StatusBadge status={row?.status ?? 0} />,
+    },
+
+    {
       label: "Job Creator",
       accessor: "requestedBy",
-      render: (row) => decryptData(row?.requestedBy ?? "", secretKey),
+      render: (row: any) => (
+        <button
+          type="button"
+          onClick={() =>
+            row?.requestedBy ? setShowJobCreatorDetails(row) : null
+          }
+          className={`${
+            row?.requestedBy
+              ? "text-lynx-blue-100"
+              : " text-lynx-blue-400 cursor-not-allowed"
+          }`}
+        >
+          {row?.requestedBy ? "View Job Creator" : "No Job Creator"}
+        </button>
+      ),
     },
     {
       label: "Assigned Professional",
@@ -105,20 +135,21 @@ export default function HomeHealthMedical({
       render: (row: any) => (
         <button
           type="button"
-          onClick={() => (row?.acceptedBy ? setShowDetails(row) : null)}
-          className=" text-lynx-blue-100"
+          onClick={() =>
+            row?.acceptedBy ? setShowProfessionalDetails(row) : null
+          }
+          className={`${
+            row?.acceptedBy
+              ? "text-lynx-blue-100"
+              : " text-red-400 cursor-not-allowed"
+          }`}
         >
-          {row?.acceptedBy ? "User Details" : "N/A"}
+          {row?.acceptedBy ? "View Assigned Job Details" : "Job Not Assigned"}
         </button>
       ),
     },
     {
-      label: "Status",
-      accessor: "status",
-      render: (row: any) => <StatusBadge status={row?.status ?? 0} />,
-    },
-    {
-      label: "Full Details",
+      label: "Job Details",
       accessor: "action",
       render: (row: any) => (
         <button
@@ -126,21 +157,11 @@ export default function HomeHealthMedical({
           onClick={() => setShowDetails(row)}
           className=" text-lynx-blue-100"
         >
-          Details
+          View Job Details
         </button>
       ),
     },
-    {
-      label: "Client Address",
-      accessor: "clientAddress",
-    },
-    {
-      label: "Phone Number",
-      accessor: "phoneNumber",
-      render: (row) => decryptData(row?.phoneNumber ?? "", secretKey),
-    },
   ];
-
   return (
     <div className="mt-4">
       {data?.length > 0 ? (
@@ -156,16 +177,36 @@ export default function HomeHealthMedical({
       ) : (
         <DataEmtpy />
       )}
-
+      {decryptData(showJobCreatorDetails?.requestedBy, secretKey) && (
+        <>
+          <JobCreator
+            setShowDetails={setShowJobCreatorDetails}
+            showDetails={showJobCreatorDetails}
+            setIsSuggestedProfessionals={setIsSuggestedProfessionals}
+          />
+        </>
+      )}
+      {decryptData(showProfessionalDetails?.clientName, secretKey) && (
+        <>
+          <AssignedProfessional
+            setShowDetails={setShowProfessionalDetails}
+            showDetails={showProfessionalDetails}
+            setIsSuggestedProfessionals={setIsSuggestedProfessionals}
+          />
+        </>
+      )}
       {decryptData(showDetails?.clientName, secretKey) ? (
-        <DetailsFacility
-          setShowDetails={setShowDetails}
-          showDetails={showDetails}
-          setIsSuggestedProfessionals={setIsSuggestedProfessionals}
-          isHomeHealth={true}
-          isRequests={isRequests}
-          handleCancelRequest={handleCancelRequest}
-        />
+        <>
+          <DetailsFacility
+            setShowDetails={setShowDetails}
+            showDetails={showDetails}
+            setIsSuggestedProfessionals={setIsSuggestedProfessionals}
+            isHomeHealth={true}
+            isRequests={isRequests}
+            handleCancelRequest={handleCancelRequest}
+            showProfessionalDetails={showProfessionalDetails}
+          />
+        </>
       ) : (
         data?.map((item: TableDataType, rowIndex: number) => (
           <ResponsiveTableCard
