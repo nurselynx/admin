@@ -28,9 +28,9 @@ const Table: React.FC<TableProps> = ({ columns, data, pagination }) => {
           <table className="w-full border-collapse table-fixed">
             <thead className="bg-[#F9F9F9] sticky top-0 z-10">
               <tr className="bg-lynx-grey-1700 text-left">
-                {columns.map((column) => (
+                {columns.map((column, colIndex) => (
                   <th
-                    key={column.accessor}
+                    key={`header-${column.accessor}-${colIndex}`}
                     className="px-2 py-3 font-medium text-sm text-lynx-blue-400 w-[300px] "
                   >
                     {column.label}
@@ -40,11 +40,18 @@ const Table: React.FC<TableProps> = ({ columns, data, pagination }) => {
             </thead>
             <tbody className="overflow-y-auto">
               {data?.map((row, rowIndex) => (
-                <tr key={rowIndex} className="border-b last:border-0">
-                  {columns.map((column) => (
+                <tr
+                  key={
+                    row.id ?? `row-${pagination?.currentPage ?? 1}-${rowIndex}`
+                  }
+                  className="border-b last:border-0"
+                >
+                  {columns.map((column, colIndex) => (
                     <td
-                      key={column.accessor}
-                      className="px-2 py-6 text-sm text-gray-700   text-ellipsis"
+                      key={`cell-${column.accessor}-${
+                        row.id ?? `${pagination?.currentPage ?? 1}-${rowIndex}`
+                      }-${colIndex}`}
+                      className="px-2 py-6 text-sm text-gray-700 text-ellipsis"
                       title={
                         typeof row[column.accessor] === "string"
                           ? row[column.accessor]
@@ -80,7 +87,7 @@ const Table: React.FC<TableProps> = ({ columns, data, pagination }) => {
           </button>
           {Array.from({ length: pagination.totalPages }).map((_, index) => (
             <button
-              key={index}
+              key={`page-${index}`}
               onClick={() => pagination.onPageChange(index + 1)}
               className={`px-3 py-1 mx-1 rounded ${
                 pagination.currentPage === index + 1

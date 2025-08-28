@@ -58,7 +58,6 @@ export const StatusBadge: React.FC<StatusProps> = ({ status }) => {
     status !== null ? STATUS_MAP[status] || defaultStatus : defaultStatus;
 
   const { text, bgColor, textColor, width } = currentStatus;
-
   return (
     <span
       className={`${bgColor} ${textColor} ${width} text-sm h-[29px] text-center flex justify-center items-center rounded-md`}
