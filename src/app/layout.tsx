@@ -3,7 +3,7 @@ import { Poppins } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "@/components/dashboard/sidebar/sideBar";
 import Header from "@/components/dashboard/header/header";
 import RegisterServiceWorker from "@/components/firebase/RegisterServiceWorker";
@@ -30,7 +30,7 @@ export default async function RootLayout({
   const userData = userCookie?.value ? JSON.parse(userCookie.value) : null;
   const renderContent = () => (
     <div className="flex flex-row">
-      <Sidebar userData={userData}/>
+      <Sidebar userData={userData} />
       <div className="flex-grow flex flex-col w-[75%]">
         <Header />
         <main className="flex-grow  text-black md:p-6 ml-0 md:ml-60 items-start h-screen">

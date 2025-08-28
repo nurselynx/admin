@@ -18,9 +18,8 @@ self.addEventListener('message', (event) => {
 
 // Function to clean HTML content
 function cleanHTML(input) {
-  return input.replace(/<\/?b>/g, '');
+  return input?.replace(/<[^>]*>/g, ''); // Removes all HTML tags
 }
-
 // Wait for Firebase to be initialized before handling messages
 self.addEventListener('activate', () => {
   if (firebaseConfig) {

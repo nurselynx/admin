@@ -40,6 +40,7 @@ const navItems = [
   { href: "/health-care", icon: availableJobs, label: "Health-care" },
   { href: "/facility", icon: availableJobs, label: "Organization" },
   { href: "/jobs", icon: myJobs, label: "Jobs" },
+  { href: "/reports", icon: availableJobs, label: "Reports" },
   { href: "/cms", icon: dashboardSelected, label: "CMS" },
   { href: "/notification", icon: bellIcon, label: "Notifications" },
 ];
