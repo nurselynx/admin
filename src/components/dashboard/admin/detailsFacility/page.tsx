@@ -62,14 +62,15 @@ const DetailsFacility: React.FC<DetailsFacilityProps> = ({
         className={`border border-solid rounded-lg px-3 py-1 text-sm text-center ${
           url
             ? "text-lynx-blue-100 border-lynx-blue-100"
-            : "!bg-white border-gray-600 cursor-not-allowed"
+            : " border-gray-600 cursor-not-allowed "
         }`}
       >
-        <div className="flex justify-between gap-2">View</div>
+        <div className="flex justify-between gap-2">
+          {url ? "View" : "No Document Available"}
+        </div>
       </button>
     </div>
   );
-
   return (
     <div className="xl:fixed xl:overflow-x-auto xl:z-50 xl:top-0 w-full xl:h-full  md:absolute md:left-0 md:top-0 md:z-50">
       <div className="bg-white min-h-screen ">
