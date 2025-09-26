@@ -40,15 +40,15 @@ const TableHeader: React.FC<{
   };
 
   return (
-    <div className="flex w-full bg-white h-16 border-b-2 border-b-lynx-grey-1800  rounded-t-3xl justify-between md:justify-start xl:whitespace-pre custom-scrollbar xl:overflow-x-auto">
+    <div className="flex w-full mt-4 bg-white pb-4 border-b-2 border-b-lynx-grey-1800 rounded-t-3xl justify-between md:justify-start">
       <div className="flex space-x-4">
         {tabs?.map((tab) => (
           <button
             key={tab}
             onClick={() => handleTabClick(tab)}
-            className={`px-4 py-2 text-base font-medium ${
+            className={`px-2 py-2 text-base font-medium h-fit ${
               activeTab === tab
-                ? "text-lynx-blue-100 border-b-2 border-lynx-blue-100 font-semibold"
+                ? "text-lynx-blue-100 border-2 rounded-md border-lynx-blue-100 font-semibold"
                 : "text-[#1A1A1A] font-normal"
             }`}
           >

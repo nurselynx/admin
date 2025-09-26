@@ -19,7 +19,10 @@ const useAxios = ({ url, method }: UseAxiosParams) => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
-  const makeRequest = async (requestData: any, token: any): Promise<AxiosResponse<any>> => {
+  const makeRequest = async (
+    requestData: any,
+    token: any
+  ): Promise<AxiosResponse<any>> => {
     setLoading(true);
     setError("");
     try {
@@ -35,11 +38,14 @@ const useAxios = ({ url, method }: UseAxiosParams) => {
           break;
 
         case "getById":
-          response = await axios.get(`${apiBaseURL}${url}${requestData?.id || ""}`, {
-            headers: {
-              Authorization: `${token || ""}`,
-            },
-          });
+          response = await axios.get(
+            `${apiBaseURL}${url}${requestData?.id || ""}`,
+            {
+              headers: {
+                Authorization: `${token || ""}`,
+              },
+            }
+          );
           break;
 
         case "post":

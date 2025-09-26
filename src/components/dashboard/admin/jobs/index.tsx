@@ -101,6 +101,7 @@ export default function DashboardJobsLayout({
       : activeTab === tabs[1]
       ? getNonMedicalData
       : getStaffData;
+  const [requestDetails, setRequestDetails] = useState<any>(null);
 
   let data = getFilteredData(activeTabData, selectedValue);
   const { searchQuery, setSearchQuery, filteredData } = useSearchFilter(data);
@@ -252,6 +253,8 @@ export default function DashboardJobsLayout({
                   setShowProfessionalDetails={setShowProfessionalDetails}
                   setShowJobCreatorDetails={setShowJobCreatorDetails}
                   handleCancelRequest={handleCancelRequest}
+                  setRequestDetails={setRequestDetails}
+                  requestDetails={requestDetails}
                   {...(activeTab === "Staffing Needs" && {
                     renderAdditionalInfo,
                   })}

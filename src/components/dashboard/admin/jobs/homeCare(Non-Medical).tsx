@@ -10,6 +10,7 @@ import { AcceptAndCanel, CancelReject } from "./homeStaffingNeeds";
 import Table from "../../table/responsiveTable";
 import JobCreator from "../jobCreator/page";
 import AssignedProfessional from "../assignedProfessional/page";
+import RecurringDetailsModal from "../../recurringDetailsModal";
 
 interface HomeHealthMedicalProps {
   data: TableDataType[];
@@ -34,6 +35,8 @@ interface HomeHealthMedicalProps {
   showProfessionalDetails?: any;
   showJobCreatorDetails?: any;
   setShowJobCreatorDetails?: any;
+  setRequestDetails?: any;
+  requestDetails?: any;
 }
 
 export const DataEmtpy = () => {
@@ -75,6 +78,8 @@ export default function HomeCareMedical({
   showProfessionalDetails,
   showJobCreatorDetails,
   setShowJobCreatorDetails,
+  setRequestDetails,
+  requestDetails,
 }: HomeHealthMedicalProps) {
   const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY ?? "";
   const columns: Column[] = [
@@ -166,13 +171,31 @@ export default function HomeCareMedical({
       label: "Job Details",
       accessor: "action",
       render: (row: any) => (
-        <button
-          type="button"
-          onClick={() => setShowDetails(row)}
-          className=" text-lynx-blue-100"
-        >
-          View Job Details
-        </button>
+        <div className=" flex gap-2">
+          <button
+            type="button"
+            onClick={() => setShowDetails(row)}
+            className=" text-lynx-blue-100"
+          >
+            View Job Details
+          </button>
+          <button
+            type="button"
+            title={
+              decryptData(row?.isRecurring, secretKey) === "Yes"
+                ? "Recurring"
+                : "Single Request"
+            }
+            onClick={() => setRequestDetails(row)}
+            className={` ${
+              decryptData(row?.isRecurring, secretKey) === "Yes"
+                ? "bg-lynx-blue-100"
+                : "bg-lynx-orange-100 "
+            }  rounded-full h-8 w-8 text-white text-xs font-normal flex items-center justify-center`}
+          >
+            {decryptData(row?.isRecurring, secretKey) === "Yes" ? "RE" : "S"}
+          </button>
+        </div>
       ),
     },
     // {
@@ -221,7 +244,10 @@ export default function HomeCareMedical({
           />
         </>
       )}
-
+      <RecurringDetailsModal
+        requestDetails={requestDetails}
+        setRequestDetails={setRequestDetails}
+      />
       {decryptData(showDetails?.clientName, secretKey) ? (
         <>
           <DetailsFacility
