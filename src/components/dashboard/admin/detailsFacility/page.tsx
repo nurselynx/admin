@@ -66,11 +66,12 @@ const DetailsFacility: React.FC<DetailsFacilityProps> = ({
         }`}
       >
         <div className="flex justify-between gap-2">
-          {url ? "View" : "No Document Available"}
+          {url ? "View" : "No Patient Information Available"}
         </div>
       </button>
     </div>
   );
+
   return (
     <div className="xl:fixed xl:overflow-x-auto xl:z-50 xl:top-0 w-full xl:h-full  md:absolute md:left-0 md:top-0 md:z-50">
       <div className="bg-white min-h-screen ">
@@ -361,7 +362,7 @@ const DetailsFacility: React.FC<DetailsFacilityProps> = ({
               </p>
               <hr />
               {renderDocumentField(
-                "Document",
+                "Patient Information",
                 showDetails?.documentUrl?.signed_url ?? ""
               )}
               <hr />
