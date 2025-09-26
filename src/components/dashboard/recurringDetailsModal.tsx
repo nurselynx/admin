@@ -60,12 +60,12 @@ const RecurringDetailsModal: React.FC<RecurringDetailsModalProps> = ({
     secretKey
   );
 
-  const startDate = requestDetails?.startDate
-    ? dayjs(requestDetails.startDate).format("MMMM D, YYYY")
+  const startDate = requestDetails?.reoccurrenceData?.startDate
+    ? dayjs(requestDetails?.reoccurrenceData?.startDate).format("MMMM D, YYYY")
     : "-";
 
-  const endDate = requestDetails?.endDate
-    ? dayjs(requestDetails.endDate).format("MMMM D, YYYY")
+  const endDate = requestDetails?.reoccurrenceData?.endDate
+    ? dayjs(requestDetails?.reoccurrenceData?.endDate).format("MMMM D, YYYY")
     : "-";
 
   const weekDays: string[] = requestDetails?.reoccurrenceData?.weekDays
