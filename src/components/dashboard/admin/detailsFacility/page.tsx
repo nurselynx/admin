@@ -172,6 +172,44 @@ const DetailsFacility: React.FC<DetailsFacilityProps> = ({
               {renderDetail("Language", showDetails?.languagePreference ?? "")}
               <hr />
 
+              {renderDetail(
+                "Pay Method",
+                decryptData(showDetails?.longTermInsurance ?? "", secretKey) ===
+                  "Yes"
+                  ? "Insurance"
+                  : "Private Pay"
+              )}
+              <hr />
+
+              {renderDetail(
+                "Desired Rate",
+                decryptData(showDetails?.privatePay ?? "", secretKey)
+                  ? `$${decryptData(showDetails?.privatePay ?? "", secretKey)}`
+                  : "N/A"
+              )}
+              <hr />
+
+              {renderDetail(
+                "Insurance Name",
+                decryptData(
+                  showDetails?.insuranceProviderName ??
+                    showDetails?.insuranceProvider ??
+                    "",
+                  secretKey
+                )
+              )}
+              <hr />
+              {renderDetail(
+                "Group Number",
+                decryptData(showDetails?.groupNumber ?? "", secretKey)
+              )}
+              <hr />
+              {renderDetail(
+                "Identification Number",
+                decryptData(showDetails?.identificationNumber ?? "", secretKey)
+              )}
+              <hr />
+
               {showDetails &&
                 renderDetail(
                   "Date",
@@ -361,6 +399,16 @@ const DetailsFacility: React.FC<DetailsFacilityProps> = ({
                 {<StatusBadge status={showDetails?.status} />}
               </p>
               <hr />
+              {showDetails?.acceptedByName && (
+                <>
+                  {renderDetail(
+                    "Accepted By",
+                    decryptData(showDetails?.acceptedByName ?? "", secretKey)
+                  )}
+                  <hr />
+                </>
+              )}
+
               {renderDocumentField(
                 "Patient Information",
                 showDetails?.documentUrl?.signed_url ?? ""

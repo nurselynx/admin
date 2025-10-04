@@ -85,7 +85,7 @@ const ResponsiveTableCard: React.FC<ResponsiveTableCardProps> = ({
             if (isRequests) {
               handleCancelRequest(viewData);
             } else {
-              setIsSuggestedProfessionals(true);
+              setIsSuggestedProfessionals?.(true);
               fetchCandidateName(isJobType ? viewData?.healthId : viewData?.id);
               // jobIDNumber(viewData?.id);
               setJobIDNumber && setJobIDNumber(viewData?.id);

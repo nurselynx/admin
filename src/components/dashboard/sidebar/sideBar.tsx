@@ -11,6 +11,7 @@ import {
   hamBurger,
   myJobs,
   bellIcon,
+  clientHistoryIcon,
 } from "../../../../public/assets/svgIcons/svgIcons";
 import { decryptData } from "@/helper/dataEncrypt";
 import { usePathname } from "next/navigation";
@@ -43,6 +44,11 @@ const navItems = [
   { href: "/reports", icon: availableJobs, label: "Reports" },
   { href: "/cms", icon: dashboardSelected, label: "CMS" },
   { href: "/notification", icon: bellIcon, label: "Notifications" },
+  // {
+  //   href: "/client-history",
+  //   icon: clientHistoryIcon,
+  //   label: "Client History",
+  // },
 ];
 
 export default function Sidebar({ userData }: SidebarProps) {
