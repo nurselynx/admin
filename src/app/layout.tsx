@@ -33,7 +33,7 @@ export default async function RootLayout({
       <Sidebar userData={userData} />
       <div className="flex-grow flex flex-col w-[75%]">
         <Header />
-        <main className="flex-grow  text-black md:p-6 ml-0 md:ml-60 items-start h-screen">
+        <main className="flex-grow bg-lynx-blue-500 text-black md:p-6 ml-0 md:ml-60 items-start h-screen">
           {children}
         </main>
       </div>

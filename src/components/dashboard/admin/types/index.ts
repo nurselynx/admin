@@ -1,3 +1,5 @@
+import { StatusType } from "../jobs/statusBadge";
+
 export type IconButtonProps = {
   activeImage: string;
   setActiveImage: (value: string) => void;
@@ -41,6 +43,7 @@ export interface TableDataType {
   experience?: string;
   privatePay?: string;
   requestedBy?: string;
+  createdAt?: string
 }
 
 export type Column = {
@@ -54,6 +57,7 @@ export interface DetailsFacilityProps {
   setShowDetails: (value: null) => void; // Function to set showDetails to null
   showDetails: {
     acceptedBy?: any;
+    acceptedByName?: string;
     other?: string;
     otherInfo?: string;
     insuranceProvider?: string;
@@ -98,7 +102,7 @@ export interface DetailsFacilityProps {
       signed_url?: string;
     };
   } | null;
-  setIsSuggestedProfessionals: (value: boolean) => void;
+  setIsSuggestedProfessionals?: (value: boolean) => void;
   isStaffingNeeds?: boolean;
   isHomeCare?: boolean;
   isHomeHealth?: boolean;
@@ -137,7 +141,7 @@ export interface ResponsiveTableCardProps {
   schedule: string;
   viewData: any;
   rowIndex: number;
-  setIsSuggestedProfessionals: (value: boolean) => void;
+  setIsSuggestedProfessionals?: (value: boolean) => void;
   setShowDetails: (data: TableDataType) => void;
   fetchCandidateName?: any;
   jobIDNumber?: any;
@@ -160,3 +164,17 @@ export interface SelectDropdownProps {
   selectedValue: string;
   handleSelectChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
+
+
+export interface ClientHistoryData {
+  job: TableDataType;
+  status: StatusType;
+  acceptedByName: string;
+}
+
+export type ClientHistoryColumn = {
+  label: string;
+  accessor: keyof ClientHistoryData | string; // Allow non-TableData keys
+  render?: (row: ClientHistoryData) => any; // Accept row data
+  hidden?: boolean;
+};

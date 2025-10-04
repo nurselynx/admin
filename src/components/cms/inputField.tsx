@@ -17,6 +17,7 @@ interface InputFieldProps {
   onFocus?: any;
   onBlur?: any;
   handleSpaceKeyPress?: any,
+  disable?: boolean
 }
 
 const FacilityInputField: React.FC<InputFieldProps> = ({
@@ -34,13 +35,14 @@ const FacilityInputField: React.FC<InputFieldProps> = ({
   className,
   onFocus,
   onBlur,
-  handleSpaceKeyPress
+  handleSpaceKeyPress,
+  disable = false
 }) => {
   return (
     <div className="relative w-full">
-      <label htmlFor={id} className="block text-base font-medium text-lynx-blue-300 mb-1">
+      {label && <label htmlFor={id} className="block text-base font-medium text-lynx-blue-300 mb-1">
         {label}
-      </label>
+      </label>}
       <div className="relative">
         <input
           type={type}
@@ -57,6 +59,7 @@ const FacilityInputField: React.FC<InputFieldProps> = ({
             if (onChange) onChange(); // Clear the error if onChange is passed
           }}
           onKeyPress={handleSpaceKeyPress}
+          disabled={disable}
         />
         {isEyeShow && (
           <button

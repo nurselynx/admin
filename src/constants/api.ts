@@ -22,3 +22,7 @@ export const JOB_CANCEL = "/admin/cancel-job";
 // report
 export const GET_REPORTS = "/admin/get-reports";
 export const DOWNLOAD_REPORTS = "/admin/download-reports";
+
+// Client history
+export const CLIENT_HISTORY = "/admin/client-history"
+export const EXPORT_CLIENT_HISTORY = "/admin/export-client-history"

@@ -21,7 +21,8 @@ const useAxios = ({ url, method }: UseAxiosParams) => {
 
   const makeRequest = async (
     requestData: any,
-    token: any
+    token: any,
+    extraConfig?: any
   ): Promise<AxiosResponse<any>> => {
     setLoading(true);
     setError("");
@@ -32,8 +33,10 @@ const useAxios = ({ url, method }: UseAxiosParams) => {
         case "get":
           response = await axios.get(`${apiBaseURL}${url}`, {
             headers: {
-              Authorization: `${token}`,
+              Authorization: `${token || ""}`,
             },
+            params: requestData,
+            ...(extraConfig ? {...extraConfig} : {})
           });
           break;
 
